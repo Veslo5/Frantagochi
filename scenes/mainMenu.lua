@@ -19,14 +19,15 @@ function mainMenu.load()
 
     mainMenu.map = love.graphics.newImage("resources/maps/Frant.png")
     mainMenu.mapg = love.graphics.newImage("resources/maps/ground.png")
+    mainMenu.franta = love.graphics.newImage("resources/maps/franta.png")
 end
 
 function mainMenu.update(dt)
 
     mainMenu.touch:Update()
 
-    local touchPosX, touchPosY = mainMenu.touch:GetCurrentPos()
-    mainMenu.gameplayCamera:SetPosition(touchPosX, touchPosY, true)
+    local touchPosX, touchPosY = mainMenu.touch:GetCurrentPos()    
+    mainMenu.gameplayCamera:SetPosition(mainMenu.gameplayCamera.X + touchPosX / 10, mainMenu.gameplayCamera.Y + touchPosY / 10, true)
 
     if (mainMenu.input:IsActionPressed("EXIT")) then
         love.event.quit()
@@ -57,9 +58,11 @@ function mainMenu.draw()
     -- Gameplay rendering
 
 
-    local localPosX, localPosY = mainMenu.roomGrid:TileWorldPosition(1, 1)
+    local localPosX, localPosY = mainMenu.roomGrid:TileWorldPosition(3,3)
     love.graphics.draw(mainMenu.map, 0, 0)
-    love.graphics.draw(mainMenu.mapg, localPosX, localPosY)
+  --  love.graphics.draw(mainMenu.mapg, localPosX, localPosY)
+    love.graphics.draw(mainMenu.franta, localPosX, localPosY)
+
 
     love.graphics.rectangle("fill", 0, 0, 5, 5)
 

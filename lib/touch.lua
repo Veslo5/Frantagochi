@@ -15,7 +15,10 @@ end
 function Touch:Update()
     
     if self.IsTouching then
-        self:End()            
+        local mx,my = love.mouse.getPosition()
+    
+        self.EndPosX = mx
+        self.EndPosY = my        
     end
 end
 
@@ -29,7 +32,11 @@ function Touch:End()
 end
 
 function Touch:GetCurrentPos()
-    return (self.StartPosX - self.EndPosX)* -1, (self.StartPosY - self.EndPosY) * -1
+    if self.IsTouching then
+        return (self.StartPosX - self.EndPosX), (self.StartPosY - self.EndPosY)        
+        else
+            return 0,0
+    end
 end
 
 return Touch
