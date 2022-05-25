@@ -2,7 +2,7 @@
 require "scene"
 require "lib.global"
 
-local FIRST_SCENE = "mainMenu"
+local FIRST_SCENE = "mainRoom"
 
 function love.load()
 	Scene.Load(FIRST_SCENE)

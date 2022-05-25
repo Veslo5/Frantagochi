@@ -7,6 +7,10 @@ Button.Width = 100
 Button.Height = 30
 Button.Image = nil
 Button.Enabled = true
+Button.IsHovered = false
+
+Button.IsDown = false
+Button.LastFrameDown = false
 
 --- Constructor
 function Button:New(x, y, width, height, text)
@@ -41,18 +45,36 @@ function Button:Draw()
         love.graphics.rectangle("line", self.X, self.Y, self.Width, self.Height)
 
         love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.print(self.Text, self.x, self.y)
+        love.graphics.print(self.Text, self.X, self.Y)
     end
 end
 
-function Button:Update()
+function Button:Update(mx, my)
     if (self.Enabled) then
-        -- if mx >= x and mx <= x + width then
-        --     if my >= y and my < y + height then
-        --         -- Do whatever here
-        --     end
-        -- end        
+        if mx >= self.X and mx <= self.X + self.Width then
+            if my >= self.Y and my < self.Y + self.Height then
+                self.IsHovered = true
+                return
+            end
+        end
+        self.IsHovered = false
     end
+end
+
+function Button:Pressed()
+    if (self.IsHovered and self.Enabled) then
+        if (self.LastFrameDown) then
+            self.IsDown = true
+        else
+            self.IsDown = true
+            self.LastFrameDown = true
+        end
+    end
+end
+
+function Button:Released()
+    self.IsDown = false
+    self.LastFrameDown = false
 end
 
 function Button:_getCenter()

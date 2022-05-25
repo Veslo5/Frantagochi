@@ -13,15 +13,19 @@ Camera.VirtualZoomY = 1
 Camera.VirtualResX = 0
 Camera.VirtualResY = 0
 
+Camera.MouseWorldX = 0
+Camera.MouseWorldY = 0
+
 -- Render scale in percent!
 Camera.RenderScale = 100
 
 --- Constructor
-function Camera:New()
+function Camera:New(renderScale)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self    
 
+    newInstance.RenderScale = renderScale or 100        
     newInstance:_calculateVirtualZoom(newInstance.RenderScaling)    
 
     return newInstance
@@ -52,6 +56,10 @@ function Camera:BeginDraw()
     love.graphics.rotate(-self.Rotation)
     love.graphics.scale(self.VirtualZoomX + self.Zoom, self.VirtualZoomY + self.Zoom)
     love.graphics.translate(-self.VirtualX, -self.VirtualY)
+    
+    local mx,my = love.mouse.getPosition()
+    self.MouseWorldX, self.MouseWorldY = self:ScreenToWorld(mx,my)
+
 end
 
 --- END DRAWING OF CAMERA
@@ -118,7 +126,7 @@ function Camera:_calculateVirtualZoom(renderScale)
     self.WindowResY = height
     
     self.VirtualResX = (self.WindowResX / 100) * self.RenderScale 
-    self.VirtualResY = (self.WindowResY / 100) * self.RenderScale 
+    self.VirtualResY = (self.WindowResY / 100) * self.RenderScale     
 
     self.VirtualZoomX = width / self.VirtualResX
     self.VirtualZoomY = height / self.VirtualResY
