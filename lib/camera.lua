@@ -18,15 +18,23 @@ Camera.MouseWorldY = 0
 
 -- Render scale in percent!
 Camera.RenderScale = 100
+-- Scale or Fill
+-- Scale is static and defined by renderScale
+-- Fill is dynamic and creating zoom in or our by current resolution
+Camera.RenderMode = "Scale"
 
 --- Constructor
-function Camera:New(renderScale)
+function Camera:New(renderScale, renderMode, virtualResWidth, virtualResHeight)
     local newInstance = {}
     setmetatable(newInstance, self)
-    self.__index = self    
+    self.__index = self
 
-    newInstance.RenderScale = renderScale or 100        
-    newInstance:_calculateVirtualZoom(newInstance.RenderScaling)    
+    newInstance.RenderScale = renderScale or 100
+    newInstance.RenderMode = renderMode or "Scale"
+    newInstance.VirtualResX = virtualResWidth or 0
+    newInstance.VirtualResY = virtualResHeight or 0
+
+    newInstance:_calculateVirtualZoom(newInstance.RenderScaling)
 
     return newInstance
 end
@@ -56,9 +64,9 @@ function Camera:BeginDraw()
     love.graphics.rotate(-self.Rotation)
     love.graphics.scale(self.VirtualZoomX + self.Zoom, self.VirtualZoomY + self.Zoom)
     love.graphics.translate(-self.VirtualX, -self.VirtualY)
-    
-    local mx,my = love.mouse.getPosition()
-    self.MouseWorldX, self.MouseWorldY = self:ScreenToWorld(mx,my)
+
+    local mx, my = love.mouse.getPosition()
+    self.MouseWorldX, self.MouseWorldY = self:ScreenToWorld(mx, my)
 
 end
 
@@ -110,12 +118,12 @@ end
 
 function Camera:SetRenderScale(renderPercent)
     self.RenderScale = renderPercent
-    self:_calculateVirtualZoom()    
+    self:_calculateVirtualZoom()
 end
 
 function Camera:Resize(width, height)
-    self:_calculateVirtualZoom(self.RenderScale)   
-    
+    self:_calculateVirtualZoom(self.RenderScale)
+
     --TODO: vyřešit align kamery po resizu. S tím se pravděpodobně sveze i origin kamery (potom zanikne parametr center z funkcí)
 end
 
@@ -124,9 +132,11 @@ function Camera:_calculateVirtualZoom(renderScale)
 
     self.WindowResX = width
     self.WindowResY = height
-    
-    self.VirtualResX = (self.WindowResX / 100) * self.RenderScale 
-    self.VirtualResY = (self.WindowResY / 100) * self.RenderScale     
+
+    if (self.RenderMode == "Scale") then
+        self.VirtualResX = (self.WindowResX / 100) * self.RenderScale
+        self.VirtualResY = (self.WindowResY / 100) * self.RenderScale
+    end
 
     self.VirtualZoomX = width / self.VirtualResX
     self.VirtualZoomY = height / self.VirtualResY

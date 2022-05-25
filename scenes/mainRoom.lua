@@ -10,27 +10,39 @@ mainRoom.ui = Global:require("lib.UI.ui")
 
 
 function mainRoom.load()
-    mainRoom:bindKeys()
-    mainRoom:createCameras()
+    love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
-    mainRoom.ui:AddButton("Test", 150, 150, 60, 30, "blah")
+    mainRoom.ui:Load("resources/fonts/Kaph-Regular.ttf")
+
+    mainRoom:bindKeys()
     mainRoom.roomGrid = mainRoom.isoGrid:New()
     mainRoom.imageList = mainRoom.collections:New()
 
     mainRoom.imageList:Add("map", love.graphics.newImage("resources/maps/Frant.png"))
     mainRoom.imageList:Add("mapg", love.graphics.newImage("resources/maps/ground.png"))
     mainRoom.imageList:Add("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
-    mainRoom.imageList:Add("monitor", love.graphics.newImage("resources/maps/monitor.png"))
+    mainRoom.imageList:Add("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
+    mainRoom.imageList:Add("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
 
-    local animgrid = mainRoom.animation.newGrid(64, 64, mainRoom.imageList:Get("frantaAnim"):getWidth(), mainRoom.imageList:Get("frantaAnim"):getHeight())
-    mainRoom.frantaAnimReal = mainRoom.animation.newAnimation(animgrid("1-4", 1), 0.1)
+
+    mainRoom.ui:AddButton("Test", 150, 150, 80, 80, mainRoom.imageList:Get("uiTest"), "TEST")
+    mainRoom:createCameras()
+
+    local frantaAnimGrid = mainRoom.animation.newGrid(64, 64, mainRoom.imageList:Get("frantaAnim"):getWidth(), mainRoom.imageList:Get("frantaAnim"):getHeight())
+    mainRoom.frantaAnimReal = mainRoom.animation.newAnimation(frantaAnimGrid("1-4", 1), 0.1)
+
+    local monitorAnimGrid = mainRoom.animation.newGrid(64, 32, mainRoom.imageList:Get("monitorAnim"):getWidth(), mainRoom.imageList:Get("monitorAnim"):getHeight())
+    mainRoom.monitorAnimReal = mainRoom.animation.newAnimation(monitorAnimGrid("1-5", 1), 0.4)
+
+
 end
 
 function mainRoom.update(dt)
 
     mainRoom.frantaAnimReal:update(dt)
+    mainRoom.monitorAnimReal:update(dt)
+
     mainRoom.touch:Update()
-    mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY)
 
     local touchPosX, touchPosY = mainRoom.touch:GetCurrentPos()
     mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)
@@ -55,13 +67,14 @@ function mainRoom.update(dt)
     if (mainRoom.input:IsActionPressed("RESET")) then
         mainRoom.gameplayCamera:SetPosition(0, 0, true)
     end
+    mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY)
 end
 
 function mainRoom.draw()
     local mouseX, mouseY = love.mouse.getPosition()
 
 
-    love.graphics.setBackgroundColor(0, 0, 0, 1)
+    love.graphics.setBackgroundColor(0.047, 0.490, 0.913, 1)
 
 
     mainRoom.gameplayCamera:BeginDraw()
@@ -70,9 +83,7 @@ function mainRoom.draw()
 
     local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
     mainRoom.frantaAnimReal:draw(mainRoom.imageList:Get("frantaAnim"), localPosX, localPosY)
-    
-    localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
-    love.graphics.draw(mainRoom.imageList:Get("monitor"),localPosX + 20, localPosY  )
+    mainRoom.monitorAnimReal:draw(mainRoom.imageList:Get("monitorAnim"), localPosX + 20, localPosY)
 
     mainRoom.gameplayCamera.EndDraw()
 
@@ -98,12 +109,10 @@ function mainRoom.draw()
 end
 
 function mainRoom:createCameras()
-    love.graphics.setDefaultFilter("nearest", "nearest", 0)
-
     mainRoom.gameplayCamera = Global:AddGlobal("GAMEPLAY_CAMERA", mainRoom.camera:New())
-    mainRoom.uiCamera = Global:AddGlobal("MENU_CAMERA", mainRoom.camera:New(100))
+    mainRoom.uiCamera = Global:AddGlobal("MENU_CAMERA", mainRoom.camera:New(100, "Fill", 1366, 768))
 
-    mainRoom.gameplayCamera:SetPosition(0, 0, true)
+    mainRoom.gameplayCamera:SetPosition(mainRoom.imageList:Get("map"):getWidth() / 2, mainRoom.imageList:Get("map"):getHeight() / 2, true)
 end
 
 function mainRoom:bindKeys()
@@ -137,7 +146,7 @@ end
 function mainRoom.mousepressed(x, y, button, istouch, presses)
     mainRoom.input:MousePressed(x, y, button, istouch, presses)
     mainRoom.touch:Start()
-    mainRoom.ui:Mousepressed(x, y, button, istouch, presses)    
+    mainRoom.ui:Mousepressed(x, y, button, istouch, presses)
 end
 
 function mainRoom.mousereleased(x, y, button, istouch, presses)
@@ -147,9 +156,9 @@ function mainRoom.mousereleased(x, y, button, istouch, presses)
 
 end
 
-function mainRoom.resize(x, y)
-    mainRoom.gameplayCamera:Resize()
-    mainRoom.uiCamera:Resize()
+function mainRoom.resize(width, height)
+    mainRoom.gameplayCamera:Resize(width, height)
+    mainRoom.uiCamera:Resize(width, height)
 end
 
 function mainRoom.unload()

@@ -3,9 +3,14 @@ local ui = {}
 ui.buttonFactory = require("lib.UI.button")
 
 ui.container = {}
+ui.font = nil
 
-function ui:AddButton(name, x, y, width, height, text)
-    self.container[name] = self.buttonFactory:New(x, y, width, height, text)
+function ui:Load(fontPath)
+    self.font = love.graphics.newFont(fontPath, 20)
+end
+
+function ui:AddButton(name, x, y, width, height, image, text)
+    self.container[name] = self.buttonFactory:New(x, y, width, height, text, image, self.font)
 end
 
 function ui:RemoveButton(name)
@@ -18,7 +23,7 @@ function ui:Update(mx, my)
     end
 end
 
-function ui:IsDown(name)    
+function ui:IsDown(name)        
     return self.container[name].IsDown
 end
 
