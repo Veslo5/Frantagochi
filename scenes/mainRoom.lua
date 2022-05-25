@@ -20,6 +20,7 @@ function mainRoom.load()
     mainRoom.imageList:Add("map", love.graphics.newImage("resources/maps/Frant.png"))
     mainRoom.imageList:Add("mapg", love.graphics.newImage("resources/maps/ground.png"))
     mainRoom.imageList:Add("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
+    mainRoom.imageList:Add("monitor", love.graphics.newImage("resources/maps/monitor.png"))
 
     local animgrid = mainRoom.animation.newGrid(64, 64, mainRoom.imageList:Get("frantaAnim"):getWidth(), mainRoom.imageList:Get("frantaAnim"):getHeight())
     mainRoom.frantaAnimReal = mainRoom.animation.newAnimation(animgrid("1-4", 1), 0.1)
@@ -69,6 +70,9 @@ function mainRoom.draw()
 
     local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
     mainRoom.frantaAnimReal:draw(mainRoom.imageList:Get("frantaAnim"), localPosX, localPosY)
+    
+    localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
+    love.graphics.draw(mainRoom.imageList:Get("monitor"),localPosX, localPosY)
 
     mainRoom.gameplayCamera.EndDraw()
 
