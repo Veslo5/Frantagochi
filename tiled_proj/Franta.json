@@ -1,0 +1,14 @@
+{ "columns":1,
+ "image":"..\/resources\/maps\/Franta.png",
+ "imageheight":64,
+ "imagewidth":64,
+ "margin":0,
+ "name":"Franta",
+ "spacing":0,
+ "tilecount":2,
+ "tiledversion":"2021.03.23",
+ "tileheight":32,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":1.5
+}

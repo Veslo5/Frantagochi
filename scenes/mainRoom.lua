@@ -72,7 +72,7 @@ function mainRoom.draw()
     mainRoom.frantaAnimReal:draw(mainRoom.imageList:Get("frantaAnim"), localPosX, localPosY)
     
     localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
-    love.graphics.draw(mainRoom.imageList:Get("monitor"),localPosX, localPosY)
+    love.graphics.draw(mainRoom.imageList:Get("monitor"),localPosX + 20, localPosY  )
 
     mainRoom.gameplayCamera.EndDraw()
 
