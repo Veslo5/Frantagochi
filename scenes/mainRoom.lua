@@ -1,97 +1,78 @@
 local mainRoom = {}
 
+Global:require("lib.anim8")
+
 mainRoom.input = Global:require("lib.bindMe")
-mainRoom.camera = Global:require("lib.camera")
 mainRoom.isoGrid = Global:require("lib.isoGrid")
 mainRoom.touch = Global:require("lib.touch")
-mainRoom.animation = Global:require("lib.anim8")
-mainRoom.collections = Global:require("lib.collections")
 mainRoom.ui = Global:require("lib.UI.ui")
+
+mainRoom.assetManagerFactory = Global:require("lib.assetManager")
+mainRoom.cameraFactory = Global:require("lib.camera")
+mainRoom.worldFactory = Global:require("scripts.world")
 
 
 function mainRoom.load()
     love.graphics.setDefaultFilter("nearest", "nearest", 0)
-
     mainRoom.ui:Load("resources/fonts/Kaph-Regular.ttf")
+
+    mainRoom.roomWorld = mainRoom.worldFactory:New()
+    mainRoom.roomWorld:Load()    
 
     mainRoom:bindKeys()
     mainRoom.roomGrid = mainRoom.isoGrid:New()
-    mainRoom.imageList = mainRoom.collections:New()
+    mainRoom.assetList = mainRoom.assetManagerFactory:New()
 
-    mainRoom.imageList:Add("map", love.graphics.newImage("resources/maps/Frant.png"))
-    mainRoom.imageList:Add("mapg", love.graphics.newImage("resources/maps/ground.png"))
-    mainRoom.imageList:Add("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
-    mainRoom.imageList:Add("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
-    mainRoom.imageList:Add("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
+    mainRoom.assetList:Load("map", love.graphics.newImage("resources/maps/Frant.png"))
+    mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
+    mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
+    mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
+    mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
 
 
-    mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.imageList:Get("uiTest"), "TEST"):Align("top","right",-5,100)
-    mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center","left")
-
-    mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.imageList:Get("uiTest"))
+    mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
+    mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center", "left")
+    mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
 
     mainRoom:createCameras()
 
-    local frantaAnimGrid = mainRoom.animation.newGrid(64, 64, mainRoom.imageList:Get("frantaAnim"):getWidth(), mainRoom.imageList:Get("frantaAnim"):getHeight())
-    mainRoom.frantaAnimReal = mainRoom.animation.newAnimation(frantaAnimGrid("1-4", 1), 0.1)
-
-    local monitorAnimGrid = mainRoom.animation.newGrid(64, 32, mainRoom.imageList:Get("monitorAnim"):getWidth(), mainRoom.imageList:Get("monitorAnim"):getHeight())
-    mainRoom.monitorAnimReal = mainRoom.animation.newAnimation(monitorAnimGrid("1-5", 1), 0.4)
-
-
+    local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
+    mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(localPosX + 20, localPosY)
+    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(localPosX, localPosY)
+    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0,0)
+       
 end
 
 function mainRoom.update(dt)
 
-    mainRoom.frantaAnimReal:update(dt)
-    mainRoom.monitorAnimReal:update(dt)
+    -- room and world update    
+    mainRoom.roomWorld:Update(dt)
 
+    -- touch update
     mainRoom.touch:Update()
-
     local touchPosX, touchPosY = mainRoom.touch:GetCurrentPos()
-    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)    
+    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)
 
+    -- keyboard handling
+    mainRoom.handleInput(mainRoom, dt)
 
-    if (mainRoom.ui:IsDown("Test")) then
-        print("test")
-    end
-
-    if (mainRoom.input:IsActionPressed("EXIT")) then
-        love.event.quit()
-    end
-
-    if (mainRoom.input:IsActionDown("ZOOMIN")) then
-        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom + dt, true)
-    end
-
-    if (mainRoom.input:IsActionDown("ZOOMOUT")) then
-        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom - dt, true)
-    end
-
-    if (mainRoom.input:IsActionPressed("RESET")) then
-        mainRoom.gameplayCamera:SetPosition(0, 0, true)
-    end
-
+    -- ui update
     mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY, dt)
+
 end
 
 function mainRoom.draw()
-    local mouseX, mouseY = love.mouse.getPosition()
-
-
     love.graphics.setBackgroundColor(0.047, 0.490, 0.913, 1)
-
-
+    
     mainRoom.gameplayCamera:BeginDraw()
-    -- Gameplay rendering
-    love.graphics.draw(mainRoom.imageList:Get("map"), 0, 0)
-
-    local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
-    mainRoom.frantaAnimReal:draw(mainRoom.imageList:Get("frantaAnim"), localPosX, localPosY)
-    mainRoom.monitorAnimReal:draw(mainRoom.imageList:Get("monitorAnim"), localPosX + 20, localPosY)
-
+    -- Gameplay rendering    
+    
+    mainRoom.roomWorld:Draw()
+    
     mainRoom.gameplayCamera.EndDraw()
-
+    
+    local mouseX, mouseY = love.mouse.getPosition()
+    
     mainRoom.uiCamera:BeginDraw()
     -- UI rendering
     love.graphics.setColor(1, 1, 1, 1)
@@ -114,10 +95,32 @@ function mainRoom.draw()
 end
 
 function mainRoom:createCameras()
-    mainRoom.gameplayCamera = Global:AddGlobal("GAMEPLAY_CAMERA", mainRoom.camera:New())
-    mainRoom.uiCamera = Global:AddGlobal("MENU_CAMERA", mainRoom.camera:New(100, "Fill", 1366, 768))
+    mainRoom.gameplayCamera = Global:AddGlobal("GAMEPLAY_CAMERA", mainRoom.cameraFactory:New())
+    mainRoom.uiCamera = Global:AddGlobal("MENU_CAMERA", mainRoom.cameraFactory:New(100, "Fill", 1366, 768))
 
-    mainRoom.gameplayCamera:SetPosition(mainRoom.imageList:Get("map"):getWidth() / 2, mainRoom.imageList:Get("map"):getHeight() / 2, true)
+    mainRoom.gameplayCamera:SetPosition(mainRoom.assetList:Get("map"):getWidth() / 2, mainRoom.assetList:Get("map"):getHeight() / 2, true)
+end
+
+function mainRoom:handleInput(dt)
+    if (mainRoom.ui:IsDown("Test")) then
+        print("test")
+    end
+
+    if (mainRoom.input:IsActionPressed("EXIT")) then
+        love.event.quit()
+    end
+
+    if (mainRoom.input:IsActionDown("ZOOMIN")) then
+        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom + dt, true)
+    end
+
+    if (mainRoom.input:IsActionDown("ZOOMOUT")) then
+        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom - dt, true)
+    end
+
+    if (mainRoom.input:IsActionPressed("RESET")) then
+        mainRoom.gameplayCamera:SetPosition(0, 0, true)
+    end
 end
 
 function mainRoom:bindKeys()

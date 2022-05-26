@@ -1,9 +1,9 @@
-local collections = {}
-collections.container = {}
+local AssetManager = {}
 
+AssetManager.container = {}
 
 --- Constructor
-function collections:New()
+function AssetManager:New()
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
@@ -11,18 +11,17 @@ function collections:New()
     return newInstance
 end
 
-function collections:Add(name, object)
+function AssetManager:Load(name, object)
     self.container[name] = object
 end
 
-function collections:Get(name)
+function AssetManager:Get(name)
     return self.container[name]
 end
 
-function collections:Clear()
+function AssetManager:Unload()
     for index, value in pairs(self.container) do
         self.container[index] = nil
     end
 end
-
-return collections
+return AssetManager
