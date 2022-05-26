@@ -25,7 +25,11 @@ function mainRoom.load()
     mainRoom.imageList:Add("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
 
 
-    mainRoom.ui:AddButton("Test", 150, 150, 80, 80, mainRoom.imageList:Get("uiTest"), "TEST")
+    mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.imageList:Get("uiTest"), "TEST"):Align("top","right",-5,100)
+    mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center","left")
+
+    mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.imageList:Get("uiTest"))
+
     mainRoom:createCameras()
 
     local frantaAnimGrid = mainRoom.animation.newGrid(64, 64, mainRoom.imageList:Get("frantaAnim"):getWidth(), mainRoom.imageList:Get("frantaAnim"):getHeight())
@@ -45,7 +49,7 @@ function mainRoom.update(dt)
     mainRoom.touch:Update()
 
     local touchPosX, touchPosY = mainRoom.touch:GetCurrentPos()
-    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)
+    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)    
 
 
     if (mainRoom.ui:IsDown("Test")) then
@@ -67,7 +71,8 @@ function mainRoom.update(dt)
     if (mainRoom.input:IsActionPressed("RESET")) then
         mainRoom.gameplayCamera:SetPosition(0, 0, true)
     end
-    mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY)
+
+    mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY, dt)
 end
 
 function mainRoom.draw()
@@ -159,6 +164,7 @@ end
 function mainRoom.resize(width, height)
     mainRoom.gameplayCamera:Resize(width, height)
     mainRoom.uiCamera:Resize(width, height)
+    mainRoom.ui:Resize(width, height)
 end
 
 function mainRoom.unload()
