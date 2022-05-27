@@ -18,7 +18,6 @@ end
 function World:Load()
     self.player = self.playerFactory:New()
     self.player:Load()
-    print(self.player.Data.LatestSave)
 end
 
 function World:AddSprite(name, image, zindex)

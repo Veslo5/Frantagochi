@@ -36,7 +36,7 @@ function mainRoom.load()
 
     mainRoom:createCameras()
 
-    local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
+    local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(7, 12)
     mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(localPosX + 20, localPosY)
     mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(localPosX, localPosY)
     mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0)
