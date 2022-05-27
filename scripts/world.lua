@@ -41,4 +41,10 @@ function World:Draw()
     end
 end
 
+function World:Unload()
+    for i = 1, #self.sprites, 1 do
+        self.sprites[i] = nil
+    end
+end
+
 return World

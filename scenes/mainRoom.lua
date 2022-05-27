@@ -17,7 +17,7 @@ function mainRoom.load()
     mainRoom.ui:Load("resources/fonts/Kaph-Regular.ttf")
 
     mainRoom.roomWorld = mainRoom.worldFactory:New()
-    mainRoom.roomWorld:Load()    
+    mainRoom.roomWorld:Load()
 
     mainRoom:bindKeys()
     mainRoom.roomGrid = mainRoom.isoGrid:New()
@@ -39,13 +39,13 @@ function mainRoom.load()
     local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(6, 6)
     mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(localPosX + 20, localPosY)
     mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(localPosX, localPosY)
-    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0,0)
-       
+    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0)
+
 end
 
 function mainRoom.update(dt)
 
-    -- room and world update    
+    -- room and world update
     mainRoom.roomWorld:Update(dt)
 
     -- touch update
@@ -63,16 +63,16 @@ end
 
 function mainRoom.draw()
     love.graphics.setBackgroundColor(0.047, 0.490, 0.913, 1)
-    
+
     mainRoom.gameplayCamera:BeginDraw()
-    -- Gameplay rendering    
-    
+    -- Gameplay rendering
+
     mainRoom.roomWorld:Draw()
-    
+
     mainRoom.gameplayCamera.EndDraw()
-    
+
     local mouseX, mouseY = love.mouse.getPosition()
-    
+
     mainRoom.uiCamera:BeginDraw()
     -- UI rendering
     love.graphics.setColor(1, 1, 1, 1)
@@ -103,7 +103,7 @@ end
 
 function mainRoom:handleInput(dt)
     if (mainRoom.ui:IsDown("Test")) then
-        print("test")
+        Scene.Load("exampleRoom");
     end
 
     if (mainRoom.input:IsActionPressed("EXIT")) then
@@ -171,7 +171,8 @@ function mainRoom.resize(width, height)
 end
 
 function mainRoom.unload()
-
+    mainRoom.assetList:Unload()
+    mainRoom.roomWorld:Unload()
 end
 
 return mainRoom
