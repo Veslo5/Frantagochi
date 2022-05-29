@@ -20,26 +20,28 @@ function mainRoom.load()
     mainRoom.roomWorld:Load()
 
     mainRoom:bindKeys()
-    mainRoom.roomGrid = mainRoom.isoGrid:New()
     mainRoom.assetList = mainRoom.assetManagerFactory:New()
-
+    
     mainRoom.assetList:Load("map", love.graphics.newImage("resources/maps/Frant.png"))
     mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
     mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
     mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
     mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
-
-
+    
+    mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
+    
     mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
     mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center", "left")
     mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
-
+    
     mainRoom:createCameras()
 
-    local localPosX, localPosY = mainRoom.roomGrid:TileWorldPosition(7, 12)
-    mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(localPosX + 20, localPosY)
-    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(localPosX, localPosY)
-    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0)
+    local monitorPosX, monitorPosY = mainRoom.roomGrid:TileWorldPosition(10, 12)
+    local frantaPosX, frantaPosY = mainRoom.roomGrid:TileWorldPosition(11, 13, 1)
+    mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(monitorPosX + 20, monitorPosY)
+    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaPosX, frantaPosY)
+    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0);    
+
 
 end
 

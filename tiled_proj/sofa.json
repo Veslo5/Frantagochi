@@ -1,0 +1,14 @@
+{ "columns":3,
+ "image":"..\/resources\/maps\/sofa.png",
+ "imageheight":96,
+ "imagewidth":192,
+ "margin":0,
+ "name":"sofa",
+ "spacing":0,
+ "tilecount":9,
+ "tiledversion":"2021.03.23",
+ "tileheight":32,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":1.5
+}
