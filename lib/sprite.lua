@@ -45,10 +45,10 @@ end
 
 function Sprite:Draw()
     if self.Static == false then
-        love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
+        --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
         self.Animation:draw(self.Image, self.X, self.Y)
     else
-        love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
+        --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
         love.graphics.draw(self.Image, self.X, self.Y)
     end
 end

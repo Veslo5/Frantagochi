@@ -30,7 +30,6 @@ function IsoGrid:TileWorldPosition(x, y, heightTileOffset)
     local gridx = (x - y) * self.TileWidth / 2
     local gridy = (x + y) * self.TileHeight / 2
 
-    print(gridx,gridy)
     gridx = gridx + (self.MapWidth / 2) - self.TileHeight / 2
     gridy = gridy - self.TileHeight * heightTileOffset
     return gridx, gridy

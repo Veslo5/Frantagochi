@@ -3,6 +3,7 @@ local ui = {}
 ui.buttonFactory = require("lib.UI.button")
 ui.scrollTextFactory = require("lib.UI.scrollText")
 ui.textFactory = require("lib.UI.text")
+ui.windowFactory = require("lib.UI.window")
 
 ui.container = {}
 ui.font = nil
@@ -23,6 +24,11 @@ end
 
 function ui:AddScrollText(name, x, y, width, height, image)
     self.container[name] = self.scrollTextFactory:New(x, y, width, height, image, self.font)
+    return self.container[name]
+end
+
+function ui:AddWindow(name, x, y, width, height, image)
+    self.container[name] = self.windowFactory:New(x, y, width, height, image)
     return self.container[name]
 end
 

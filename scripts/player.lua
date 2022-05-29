@@ -4,11 +4,13 @@ Player.datelib = Global:require("lib.date")
 Player.json = Global:require("lib.json")
 
 
-Player.Data = {
-    JobQueue = {},
-    CurrentAnimation = "",
-    LatestSave = nil,
 
+Player.Data = {
+    EventQueue = {},
+    ProgressStats = {},
+    CurrentAnimation = "",
+
+    LatestSave = nil,
 }
 
 --- Constructor
@@ -18,6 +20,14 @@ function Player:New()
     self.__index = self
 
     return newInstance
+end
+
+function Player:AddEvent(event)
+    table.insert(self.Data.EventQueue,event)
+end
+
+function Player:AddProgressStat(name, stat)
+    self.Data.ProgressStats[name] = stat
 end
 
 function Player:Load()

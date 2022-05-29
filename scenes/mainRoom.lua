@@ -33,6 +33,7 @@ function mainRoom.load()
     mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
     mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center", "left")
     mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
+    --mainRoom.ui:AddWindow("TESTWIN", 0, 300, 400, 400, mainRoom.assetList:Get("uiTest"))
     
     mainRoom:createCameras()
 
@@ -78,18 +79,18 @@ function mainRoom.draw()
     mainRoom.uiCamera:BeginDraw()
     -- UI rendering
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print(mouseX, 0, 0)
-    love.graphics.print(mouseY, 0, 10)
+    love.graphics.print(mouseX, 20, 20)
+    love.graphics.print(mouseY, 20, 30)
 
-    love.graphics.print("G-Camera", 0, 20)
+    love.graphics.print("G-Camera", 20, 50)
 
-    love.graphics.print(mainRoom.gameplayCamera.MouseWorldX, 0, 30)
-    love.graphics.print(mainRoom.gameplayCamera.MouseWorldY, 0, 40)
+    love.graphics.print(mainRoom.gameplayCamera.MouseWorldX, 20, 60)
+    love.graphics.print(mainRoom.gameplayCamera.MouseWorldY, 20, 70)
 
-    love.graphics.print("UI-Camera", 0, 50)
+    love.graphics.print("UI-Camera", 20, 90)
 
-    love.graphics.print(mainRoom.uiCamera.MouseWorldX, 0, 60)
-    love.graphics.print(mainRoom.uiCamera.MouseWorldY, 0, 70)
+    love.graphics.print(mainRoom.uiCamera.MouseWorldX, 20, 100)
+    love.graphics.print(mainRoom.uiCamera.MouseWorldY, 20, 110)
 
     mainRoom.ui:Draw()
     mainRoom.uiCamera:EndDraw()
@@ -113,11 +114,11 @@ function mainRoom:handleInput(dt)
     end
 
     if (mainRoom.input:IsActionDown("ZOOMIN")) then
-        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom + dt, true)
+        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom + 0.05, true)
     end
 
     if (mainRoom.input:IsActionDown("ZOOMOUT")) then
-        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom - dt, true)
+        mainRoom.gameplayCamera:SetZoom(mainRoom.gameplayCamera.Zoom - 0.05, true)
     end
 
     if (mainRoom.input:IsActionPressed("RESET")) then
