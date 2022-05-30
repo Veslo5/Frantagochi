@@ -31,7 +31,11 @@ function mainRoom.load()
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
     
     mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
-    mainRoom.ui:AddText("Text", 0, 0, "poiajyfajpifjsapjfpajfs"):Align("center", "left")
+    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("center", "left",20,10)
+    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("center", "left",20,30)
+    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("center", "left",20,50)
+    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("center", "left",20,70)
+    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("center", "left",20,90)
     mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
     --mainRoom.ui:AddWindow("TESTWIN", 0, 300, 400, 400, mainRoom.assetList:Get("uiTest"))
     
@@ -92,6 +96,8 @@ function mainRoom.draw()
     love.graphics.print(mainRoom.uiCamera.MouseWorldX, 20, 100)
     love.graphics.print(mainRoom.uiCamera.MouseWorldY, 20, 110)
 
+    love.graphics.print(love.timer.getFPS(), 20, 130)
+
     mainRoom.ui:Draw()
     mainRoom.uiCamera:EndDraw()
 
@@ -105,9 +111,8 @@ function mainRoom:createCameras()
 end
 
 function mainRoom:handleInput(dt)
-    if (mainRoom.ui:IsDown("Test")) then
-        Scene.Load("exampleRoom");
-    end
+    -- if (mainRoom.ui:IsDown("Test")) then
+    -- end
 
     if (mainRoom.input:IsActionPressed("EXIT")) then
         love.event.quit()
@@ -122,7 +127,8 @@ function mainRoom:handleInput(dt)
     end
 
     if (mainRoom.input:IsActionPressed("RESET")) then
-        mainRoom.gameplayCamera:SetPosition(0, 0, true)
+        Scene.Load("exampleRoom")
+        
     end
 end
 
@@ -132,7 +138,6 @@ function mainRoom:bindKeys()
     local down_action = Global:AddGlobal("DOWN_ACTION", "DOWN")
     local right_action = Global:AddGlobal("RIGHT_ACTION", "RIGHT")
     local up_action = Global:AddGlobal("UP_ACTION", "UP")
-
 
     self.input:Bind(up_action, "w", "up")
     self.input:Bind(down_action, "s", "down")

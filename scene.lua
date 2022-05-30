@@ -5,14 +5,14 @@ Scene = {}
 local mt =
 
 setmetatable(Scene, { __index = function(t, k)
-    if currentScene and type(currentScene[k]) == "function" then
-        return currentScene[k]
+    if CurrentScene and type(CurrentScene[k]) == "function" then
+        return CurrentScene[k]
     end
     return function() end
 end })
 
 function Scene.Load(name)
-    if currentScene then
+    if CurrentScene then
 
         local stats = love.graphics.getStats()
         print("before drawcalls: " .. stats.drawcalls)
@@ -26,7 +26,7 @@ function Scene.Load(name)
     end
     local chunk = love.filesystem.load(scenesFolder .. "/" .. name .. ".lua")
     if not chunk then error("Attempt to load scene \"" .. name .. "\", but it was not found in \"" .. scenesFolder .. "\" folder.", 2) end
-    currentScene = chunk()
+    CurrentScene = chunk()
 
     print("collected memory before gc:" .. collectgarbage("count"))
     collectgarbage("collect") -- collect all the garbage from unload

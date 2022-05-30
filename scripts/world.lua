@@ -32,6 +32,7 @@ function World:Update(dt)
     for key, value in pairs(self.sprites) do
         value:Update(dt)
     end
+    self.player:Update(dt)
 end
 
 function World:Draw()
