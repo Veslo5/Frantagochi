@@ -1,0 +1,64 @@
+{
+    "Events": [
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 1",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 2",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 3",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 4",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 5",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 6",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 7",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 8",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 9",
+            "Duration": 5,
+            "Progress": 0
+        },
+        {
+            "Animation": "idle_programming",
+            "Description": "EVENT 10",
+            "Duration": 5,
+            "Progress": 0
+        }
+    ]
+}

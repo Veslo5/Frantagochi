@@ -7,6 +7,7 @@ Sprite.Static = true
 Sprite.AnimGrid = nil
 Sprite.Animation = nil
 Sprite.Z = 0
+Sprite.Visible = true
 
 
 
@@ -29,6 +30,11 @@ function Sprite:SetPosition(x, y)
     return self
 end
 
+function Sprite:SetVisibility(visible)
+    self.Visible = visible
+    return self
+end
+
 function Sprite:Animate(gridWidth, gridHeight, animSpeed, frames, row)
     local animation = Global:GetGlobal("lib.anim8")
     self.AnimGrid = animation.newGrid(gridWidth, gridHeight, self.Image:getWidth(), self.Image:getHeight())
@@ -38,18 +44,20 @@ function Sprite:Animate(gridWidth, gridHeight, animSpeed, frames, row)
 end
 
 function Sprite:Update(dt)
-    if self.Static == false then
+    if self.Static == false and self.Visible == true then
         self.Animation:update(dt)
     end
 end
 
 function Sprite:Draw()
-    if self.Static == false then
-        --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
-        self.Animation:draw(self.Image, self.X, self.Y)
-    else
-        --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
-        love.graphics.draw(self.Image, self.X, self.Y)
+    if self.Visible == true then
+        if self.Static == false then
+            --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
+            self.Animation:draw(self.Image, self.X, self.Y)
+        else
+            --love.graphics.rectangle("line", self.X, self.Y, self.Image:getWidth(), self.Image:getHeight())
+            love.graphics.draw(self.Image, self.X, self.Y)
+        end
     end
 end
 

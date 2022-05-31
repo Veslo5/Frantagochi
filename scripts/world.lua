@@ -28,6 +28,14 @@ function World:AddSprite(name, image, zindex)
     return item
 end
 
+function World:GetSprite(name)
+    for index, value in ipairs(self.sprites) do
+        if value.Name == name then
+            return value
+        end
+    end
+end
+
 function World:Update(dt)
     for key, value in pairs(self.sprites) do
         value:Update(dt)
