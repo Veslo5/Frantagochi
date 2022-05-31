@@ -26,6 +26,7 @@ function mainRoom.load()
     mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
     mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
     mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
+    mainRoom.assetList:Load("frantaAnimSit", love.graphics.newImage("resources/maps/Franta_sit.png"))
     mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
     
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
@@ -43,8 +44,10 @@ function mainRoom.load()
 
     local monitorPosX, monitorPosY = mainRoom.roomGrid:TileWorldPosition(10, 12)
     local frantaPosX, frantaPosY = mainRoom.roomGrid:TileWorldPosition(11, 13, 1)
+    local frantaSitPosX, frantaSitPosY = mainRoom.roomGrid:TileWorldPosition(4, 12)
     mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(monitorPosX + 20, monitorPosY)
-    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaPosX, frantaPosY)
+    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaPosX, frantaPosY):SetVisibility(false)
+    mainRoom.roomWorld:AddSprite("idle_sitting", mainRoom.assetList:Get("frantaAnimSit"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaSitPosX, frantaSitPosY):SetVisibility(false)
     mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0);    
 
 

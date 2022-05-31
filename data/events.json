@@ -7,7 +7,7 @@
             "Progress": 0
         },
         {
-            "Animation": "idle_programming",
+            "Animation": "idle_sitting",
             "Description": "EVENT 2",
             "Duration": 5,
             "Progress": 0
@@ -19,7 +19,7 @@
             "Progress": 0
         },
         {
-            "Animation": "idle_programming",
+            "Animation": "idle_sitting",
             "Description": "EVENT 4",
             "Duration": 5,
             "Progress": 0
@@ -31,7 +31,7 @@
             "Progress": 0
         },
         {
-            "Animation": "idle_programming",
+            "Animation": "idle_sitting",
             "Description": "EVENT 6",
             "Duration": 5,
             "Progress": 0
@@ -43,7 +43,7 @@
             "Progress": 0
         },
         {
-            "Animation": "idle_programming",
+            "Animation": "idle_sitting",
             "Description": "EVENT 8",
             "Duration": 5,
             "Progress": 0
@@ -55,7 +55,7 @@
             "Progress": 0
         },
         {
-            "Animation": "idle_programming",
+            "Animation": "idle_sitting",
             "Description": "EVENT 10",
             "Duration": 5,
             "Progress": 0

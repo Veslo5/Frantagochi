@@ -1,0 +1,14 @@
+{ "columns":4,
+ "image":"..\/resources\/maps\/Franta_sit.png",
+ "imageheight":64,
+ "imagewidth":256,
+ "margin":0,
+ "name":"FrantaSit",
+ "spacing":0,
+ "tilecount":8,
+ "tiledversion":"2021.03.23",
+ "tileheight":32,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":1.5
+}
