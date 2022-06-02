@@ -21,25 +21,38 @@ function mainRoom.load()
 
     mainRoom:bindKeys()
     mainRoom.assetList = mainRoom.assetManagerFactory:New()
-    
+
     mainRoom.assetList:Load("map", love.graphics.newImage("resources/maps/Frant.png"))
     mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
     mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
     mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
     mainRoom.assetList:Load("frantaAnimSit", love.graphics.newImage("resources/maps/Franta_sit.png"))
     mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
-    
+
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
+
+    local button = mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
     
-    mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
-    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("center", "left",20,10)
-    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("center", "left",20,30)
-    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("center", "left",20,50)
-    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("center", "left",20,70)
-    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("center", "left",20,90)
+    mainRoom.ui:AddInAnimation(2, button, { Height = 150 }, "linear")
+    mainRoom.ui:AddOutAnimation(2, button, { Height = 80 }, "linear")
+    mainRoom.ui:StartAnimation(button)
+
+
+    mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)
+    mainRoom.ui:AddText("Stat2", 0, 0, ""):Align("center", "left", 20, -50)
+    mainRoom.ui:AddText("Stat3", 0, 0, ""):Align("center", "left", 20, -30)
+
+    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("center", "left", 20, 10)
+    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("center", "left", 20, 30)
+    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("center", "left", 20, 50)
+    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("center", "left", 20, 70)
+    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("center", "left", 20, 90)
+
     mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
-    --mainRoom.ui:AddWindow("TESTWIN", 0, 300, 400, 400, mainRoom.assetList:Get("uiTest"))
-    
+
+    local window = mainRoom.ui:AddWindow("TESTWIN", -200, 300, 400, 400, mainRoom.assetList:Get("uiTest"), 1)
+    window:AddControl("testetext", mainRoom.ui:NewText("Boooo", 0, 0, "IAM INSIDEWINDOW"))
+
     mainRoom:createCameras()
 
     local monitorPosX, monitorPosY = mainRoom.roomGrid:TileWorldPosition(10, 12)
@@ -48,7 +61,7 @@ function mainRoom.load()
     mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(monitorPosX + 20, monitorPosY)
     mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaPosX, frantaPosY):SetVisibility(false)
     mainRoom.roomWorld:AddSprite("idle_sitting", mainRoom.assetList:Get("frantaAnimSit"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaSitPosX, frantaSitPosY):SetVisibility(false)
-    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0);    
+    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0);
 
 
 end
@@ -131,7 +144,7 @@ function mainRoom:handleInput(dt)
 
     if (mainRoom.input:IsActionPressed("RESET")) then
         Scene.Load("exampleRoom")
-        
+
     end
 end
 

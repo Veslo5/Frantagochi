@@ -1,5 +1,6 @@
 local Text = {}
 
+Text.Name = ""
 Text.Text = ""
 Text.X = 0
 Text.Y = 0
@@ -8,19 +9,29 @@ Text.Height = 30
 Text.VerticalAlign = "top"
 Text.HorizontalAlign = "left"
 Text.Font = nil
+Text.Z = 0
+Text.Opacity = 1
+
+Text.AnimationCompleted = true
+Text.StartAnim = false
+Text.InEnded = false
+Text.InAnimations = {}
+Text.OutAnimations = {}
 
 --- Constructor
-function Text:New(x, y, text, font)
+function Text:New(name, x, y, text, zIndex, font)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
+    newInstance.Name = name
     newInstance.X = x
     newInstance.Y = y
-    newInstance.Text = text    
+    newInstance.Text = text
     newInstance.Font = font
     newInstance.Width = newInstance.Font:getWidth(newInstance.Text)
     newInstance.Height = newInstance.Font:getHeight(newInstance.Text)
+    newInstance.Z = zIndex or 0
 
     return newInstance
 end
@@ -52,8 +63,41 @@ function Text:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
 
 end
 
-function Text:Draw()    
-        love.graphics.print(self.Text, self.Font, self.X, self.Y)    
+function Text:Update(mx, my, dt)
+    if self.StartAnim then
+        self:_handleAnimationTween(dt)
+    end
 end
+
+function Text:Draw()
+    love.graphics.setColor(1, 1, 1, self.Opacity)
+    love.graphics.print(self.Text, self.Font, self.X, self.Y)
+    love.graphics.setColor(1, 1, 1, 1)
+end
+
+function Text:_handleAnimationTween(dt)
+
+    if self.InEnded == false then
+        for index, value in ipairs(self.InAnimations) do
+            self.AnimationCompleted = value:update(dt)
+        end
+
+        if self.AnimationCompleted == true then
+            self.InEnded = true
+            self.AnimationCompleted = false
+        end
+
+    else
+        for index, value in ipairs(self.OutAnimations) do
+            self.AnimationCompleted = value:update(dt)
+        end
+
+        if self.AnimationCompleted == true then
+            self.StartAnim = false
+            self.AnimationCompleted = false
+        end
+    end
+end
+
 
 return Text

@@ -3,7 +3,10 @@ local Player = {}
 Player.datelib = Global:require("lib.date")
 Player.json = Global:require("lib.json")
 Player.timerFactory = Global:require("lib.timer")
+
 Player.eventFactory = require("scripts.event")
+Player.progressStatFactory = require("scripts.progressStat")
+
 Player.timer = nil
 Player.loadedEvents = nil
 
@@ -44,12 +47,21 @@ function Player:Load()
     else
         -- first start
         self:LoadEvents()
+        self:LoadProgressStats()
 
     end
 
     self.timer:Every("eventChecker", math.huge, 1, self.CheckEvents, self)
 
 end
+
+function Player:LoadProgressStats()
+self:AddProgressStat("Hlad", self.progressStatFactory:New(100,0,"Hlad"))
+self:AddProgressStat("Stres", self.progressStatFactory:New(100,0,"Stres"))
+self:AddProgressStat("Hygiena", self.progressStatFactory:New(100,0,"Hygiena"))
+end
+
+
 
 function Player:LoadEvents()
     local eventJson = love.filesystem.read("data/events.json")
@@ -68,6 +80,20 @@ function Player:GenerateEvent()
 end
 
 function Player:CheckEvents()
+
+    local stat1 = self.Data.ProgressStats["Hlad"]
+    local stat2 = self.Data.ProgressStats["Stres"]
+    local stat3 = self.Data.ProgressStats["Hygiena"]
+
+    if stat1 then
+        CurrentScene.ui:GetControl("Stat1").Text = stat1.Description .. " Current: " .. tostring(stat1.Current) .. " Max: " .. tostring(stat1.Maximum)
+    end
+    if stat2 then
+        CurrentScene.ui:GetControl("Stat2").Text = stat2.Description .. " Current: " .. tostring(stat2.Current) .. " Max: " .. tostring(stat2.Maximum)
+    end
+    if stat3 then
+        CurrentScene.ui:GetControl("Stat3").Text = stat3.Description .. " Current: " .. tostring(stat3.Current) .. " Max: " .. tostring(stat3.Maximum)
+    end
 
     local event1 = self.Data.EventQueue[1]
     local event2 =  self.Data.EventQueue[2]
