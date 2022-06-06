@@ -1,5 +1,7 @@
 local Window = {}
 
+Window.ControlBaseHelper = require("lib.UI.controlBaseHelper")
+
 Window.Name = ""
 Window.X = 0
 Window.Y = 0
@@ -40,6 +42,10 @@ function Window:AddControl(name, control)
     control.Y = self.Y + control.Y
 end
 
+function Window:GetControl(name)
+    return self.Controls[name]
+end
+
 function Window:SetPosition(x, y)
     self.X = x
     self.Y = y
@@ -51,40 +57,23 @@ function Window:SetPosition(x, y)
 
 end
 
+function Window:IsDown(name)
+    return self.Controls[name].IsDown
+end
+
 function Window:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
-    offsetX = offsetX or 0
-    offsetY = offsetY or 0
-
-    local screenWidth, screenHeight = love.graphics.getDimensions()
-    if verticalAlign ~= nil then
-        if (verticalAlign == "top") then
-            self.Y = 0 + offsetY
-        elseif (verticalAlign == "center") then
-            self.Y = (screenHeight / 2) - (self.Height / 2) + offsetY
-        elseif (verticalAlign == "bottom") then
-            self.Y = screenHeight - self.Height + offsetY
-        end
-    end
-
-    if verticalAlign ~= nil then
-        if (horizontalAlign == "left") then
-            self.X = 0 + offsetX
-        elseif (horizontalAlign == "center") then
-            self.X = (screenWidth / 2) - (self.Width / 2) + offsetX
-        elseif (horizontalAlign == "right") then
-            self.X = screenWidth - self.Width + offsetX
-        end
-    end
-
+    self.ControlBaseHelper._align(self, verticalAlign, horizontalAlign, offsetX, offsetY)
 end
 
+function Window:Update(mx, my, dt)
+    for key, value in pairs(self.Controls) do        
+        value:Update(mx, my, dt)
+    end
 
-function Window:Update(mx,my, dt)
     if self.StartAnim then
-        self:_handleAnimationTween(dt)
+        self.ControlBaseHelper._handleAnimationTween(self, dt)
     end
 end
-
 
 function Window:Draw()
     love.graphics.setColor(1, 1, 1, self.Opacity)
@@ -98,26 +87,18 @@ function Window:Draw()
 
 end
 
-function Window:_handleAnimationTween(dt)
-
-    if self.InEnded == false then
-        for index, value in ipairs(self.InAnimations) do
-            self.AnimationCompleted = value:update(dt)
+function Window:Pressed(x, y, button, istouch, presses)
+    for key, value in pairs(self.Controls) do
+        if (type(value.Pressed) == "function") then
+            value:Pressed(x, y, button, istouch, presses)
         end
+    end
+end
 
-        if self.AnimationCompleted == true then
-            self.InEnded = true
-            self.AnimationCompleted = false
-        end
-
-    else
-        for index, value in ipairs(self.OutAnimations) do
-            self.AnimationCompleted = value:update(dt)
-        end
-
-        if self.AnimationCompleted == true then
-            self.StartAnim = false
-            self.AnimationCompleted = false
+function Window:Released(x, y, button, istouch, presses)
+    for key, value in pairs(self.Controls) do
+        if (type(value.Released) == "function") then
+            value:Released(x, y, button, istouch, presses)
         end
     end
 end

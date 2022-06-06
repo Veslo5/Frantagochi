@@ -32,26 +32,29 @@ function mainRoom.load()
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
 
     local button = mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
-    
+
     mainRoom.ui:AddInAnimation(2, button, { Height = 150 }, "linear")
     mainRoom.ui:AddOutAnimation(2, button, { Height = 80 }, "linear")
     mainRoom.ui:StartAnimation(button)
 
 
-    mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)
-    mainRoom.ui:AddText("Stat2", 0, 0, ""):Align("center", "left", 20, -50)
-    mainRoom.ui:AddText("Stat3", 0, 0, ""):Align("center", "left", 20, -30)
+    -- mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)
+    -- mainRoom.ui:AddText("Stat2", 0, 0, ""):Align("center", "left", 20, -50)
+    -- mainRoom.ui:AddText("Stat3", 0, 0, ""):Align("center", "left", 20, -30)
 
-    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("center", "left", 20, 10)
-    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("center", "left", 20, 30)
-    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("center", "left", 20, 50)
-    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("center", "left", 20, 70)
-    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("center", "left", 20, 90)
+    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("top", "center", -200, 50)
+    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("top", "center", -200, 70)
+    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("top", "center", -200, 90)
+    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("top", "center", -200, 110)
+    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("top", "center", -200, 130)
 
     mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
 
-    local window = mainRoom.ui:AddWindow("TESTWIN", -200, 300, 400, 400, mainRoom.assetList:Get("uiTest"), 1)
-    window:AddControl("testetext", mainRoom.ui:NewText("Boooo", 0, 0, "IAM INSIDEWINDOW"))
+    mainRoom.window = mainRoom.ui:AddWindow("TESTWIN", -300, 300, 400, 400, mainRoom.assetList:Get("uiTest"), 1)
+    mainRoom.window:AddControl("Stat1", mainRoom.ui:NewText("Stat1", 0, 90, "IAM INSIDEWINDOW"))
+    mainRoom.window:AddControl("Stat2", mainRoom.ui:NewText("Stat2", 0, 120, "IAM INSIDEWINDOW"))
+    mainRoom.window:AddControl("Stat3", mainRoom.ui:NewText("Stat3", 0, 150, "IAM INSIDEWINDOW"))
+    mainRoom.ui:AddButton("EXPAND", 60, 260, 80, 80, mainRoom.assetList:Get("uiTest"), ">>",2)    
 
     mainRoom:createCameras()
 
@@ -78,7 +81,11 @@ function mainRoom.update(dt)
 
     -- keyboard handling
     mainRoom.handleInput(mainRoom, dt)
-
+    
+    
+-- if  mainRoom.ui:IsDown("EXPAND") then
+--     print("Hello")
+-- end
     -- ui update
     mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY, dt)
 

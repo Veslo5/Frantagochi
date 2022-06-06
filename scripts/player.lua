@@ -56,12 +56,10 @@ function Player:Load()
 end
 
 function Player:LoadProgressStats()
-self:AddProgressStat("Hlad", self.progressStatFactory:New(100,0,"Hlad"))
-self:AddProgressStat("Stres", self.progressStatFactory:New(100,0,"Stres"))
-self:AddProgressStat("Hygiena", self.progressStatFactory:New(100,0,"Hygiena"))
+    self:AddProgressStat("Hlad", self.progressStatFactory:New(100, 0, "Hlad"))
+    self:AddProgressStat("Stres", self.progressStatFactory:New(100, 0, "Stres"))
+    self:AddProgressStat("Hygiena", self.progressStatFactory:New(100, 0, "Hygiena"))
 end
-
-
 
 function Player:LoadEvents()
     local eventJson = love.filesystem.read("data/events.json")
@@ -81,25 +79,28 @@ end
 
 function Player:CheckEvents()
 
+    local window = CurrentScene.ui:GetControl("TESTWIN")
+
+
     local stat1 = self.Data.ProgressStats["Hlad"]
     local stat2 = self.Data.ProgressStats["Stres"]
     local stat3 = self.Data.ProgressStats["Hygiena"]
 
     if stat1 then
-        CurrentScene.ui:GetControl("Stat1").Text = stat1.Description .. " Current: " .. tostring(stat1.Current) .. " Max: " .. tostring(stat1.Maximum)
+        window:GetControl("Stat1").Text = stat1.Description .. " Current: " .. tostring(stat1.Current) .. " Max: " .. tostring(stat1.Maximum)
     end
     if stat2 then
-        CurrentScene.ui:GetControl("Stat2").Text = stat2.Description .. " Current: " .. tostring(stat2.Current) .. " Max: " .. tostring(stat2.Maximum)
+        window:GetControl("Stat2").Text = stat2.Description .. " Current: " .. tostring(stat2.Current) .. " Max: " .. tostring(stat2.Maximum)
     end
     if stat3 then
-        CurrentScene.ui:GetControl("Stat3").Text = stat3.Description .. " Current: " .. tostring(stat3.Current) .. " Max: " .. tostring(stat3.Maximum)
+        window:GetControl("Stat3").Text = stat3.Description .. " Current: " .. tostring(stat3.Current) .. " Max: " .. tostring(stat3.Maximum)
     end
 
     local event1 = self.Data.EventQueue[1]
-    local event2 =  self.Data.EventQueue[2]
-    local event3 =  self.Data.EventQueue[3]
-    local event4 =  self.Data.EventQueue[4]
-    local event5 =  self.Data.EventQueue[5]
+    local event2 = self.Data.EventQueue[2]
+    local event3 = self.Data.EventQueue[3]
+    local event4 = self.Data.EventQueue[4]
+    local event5 = self.Data.EventQueue[5]
     if event1 then
         CurrentScene.ui:GetControl("Event1").Text = event1.Description .. " Progress: " .. tostring(event1.Progress) .. " Duration: " .. tostring(event1.Duration)
     end
@@ -116,13 +117,13 @@ function Player:CheckEvents()
         CurrentScene.ui:GetControl("Event5").Text = event5.Description .. " Progress: " .. tostring(event5.Progress) .. " Duration: " .. tostring(event5.Duration)
     end
 
-    if (event1.Progress >= event1.Duration) then        
+    if (event1.Progress >= event1.Duration) then
         CurrentScene.roomWorld:GetSprite(event1.Animation):SetVisibility(false)
-        
+
         table.remove(self.Data.EventQueue, 1)
         self:AddEvent(self:GenerateEvent())
-        
-        local newLatestEvent = self.Data.EventQueue[1]       
+
+        local newLatestEvent = self.Data.EventQueue[1]
         CurrentScene.roomWorld:GetSprite(newLatestEvent.Animation):SetVisibility(true)
     else
         event1.Progress = event1.Progress + 1

@@ -106,7 +106,7 @@ end
 function ui:Mousepressed(x, y, button, istouch, presses)
     for key, value in pairs(self.container) do
         if (type(value.Pressed) == "function") then
-            value:Pressed()
+            value:Pressed(x,y,button,istouch, presses)
         end
     end
 end
@@ -114,7 +114,7 @@ end
 function ui:Mousereleased(x, y, button, istouch, presses)
     for key, value in pairs(self.container) do
         if (type(value.Released) == "function") then
-            value:Released()
+            value:Released(x, y, button, istouch, presses)
         end
     end
 end

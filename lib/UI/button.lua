@@ -1,5 +1,7 @@
 local Button = {}
 
+Button.ControlBaseHelper = require("lib.UI.controlBaseHelper")
+
 Button.Name = ""
 Button.Text = ""
 Button.X = 0
@@ -53,39 +55,17 @@ function Button:Disable()
 end
 
 function Button:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
-    offsetX = offsetX or 0
-    offsetY = offsetY or 0
-
-    local screenWidth, screenHeight = love.graphics.getDimensions()
-    if verticalAlign ~= nil then
-        if (verticalAlign == "top") then
-            self.Y = 0 + offsetY
-        elseif (verticalAlign == "center") then
-            self.Y = (screenHeight / 2) - (self.Height / 2) + offsetY
-        elseif (verticalAlign == "bottom") then
-            self.Y = screenHeight - self.Height + offsetY
-        end
-    end
-
-    if verticalAlign ~= nil then
-        if (horizontalAlign == "left") then
-            self.X = 0 + offsetX
-        elseif (horizontalAlign == "center") then
-            self.X = (screenWidth / 2) - (self.Width / 2) + offsetX
-        elseif (horizontalAlign == "right") then
-            self.X = screenWidth - self.Width + offsetX
-        end
-    end
+    self.ControlBaseHelper._align(self, verticalAlign, horizontalAlign, offsetX, offsetY)
     return self
 end
 
 function Button:Update(mx, my, dt)
     if (self.Enabled) then
-        self:_handleMouseCoords(mx, my)
+        self.ControlBaseHelper._handleMouseCoords(self, mx, my)
     end
 
     if self.StartAnim then
-        self:_handleAnimationTween(dt)
+        self.ControlBaseHelper._handleAnimationTween(self, dt)
     end
 
 end
@@ -109,7 +89,7 @@ function Button:Draw()
     end
 end
 
-function Button:Pressed()
+function Button:Pressed()        
     if (self.IsHovered and self.Enabled) then
         self.IsDown = true
         self.LastFrameDown = false
@@ -119,68 +99,6 @@ end
 function Button:Released()
     self.IsDown = false
     self.LastFrameDown = false
-end
-
-function Button:_handleMouseCoords(mx, my)
-    if (self.LastFrameDown == false and self.IsDown) then
-        self.IsDown = false
-        self.LastFrameDown = true
-    end
-
-    if mx >= self.X and mx <= self.X + self.Width then
-        if my >= self.Y and my < self.Y + self.Height then
-            self.IsHovered = true
-            return
-        end
-    end
-    self.IsHovered = false
-end
-
-function Button:_handleAnimationTween(dt)
-    if self.InEnded == false then
-        for index, value in ipairs(self.InAnimations) do
-            self.AnimationCompleted = value:update(dt)
-        end
-
-        if self.AnimationCompleted == true then
-            self.InEnded = true
-
-            self.AnimationCompleted = false
-        end
-
-    else
-
-        for index, value in ipairs(self.OutAnimations) do
-            self.AnimationCompleted = value:update(dt)
-        end
-
-        if self.AnimationCompleted == true then
-            for index, value in ipairs(self.OutAnimations) do
-                self.AnimationCompleted = value:update(dt)
-            end
-
-            self.AnimationCompleted = false
-
-            if self.AnimationRepeat == false then
-                self.StartAnim = false
-            else
-                self.InEnded = false
-                self:_resetTweens()
-            end
-        end
-    end
-end
-
-function Button:_resetTweens()
-    for index, value in ipairs(self.InAnimations) do
-        value:reset()
-    end
-
-    -- TODO: Tohle musím vyresetovat asi až později
-
-    for index, value in ipairs(self.OutAnimations) do
-        value:reset()
-    end
 end
 
 function Button:_getCenter()
