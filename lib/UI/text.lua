@@ -39,6 +39,11 @@ function Text:New(name, x, y, text, zIndex, font)
     return newInstance
 end
 
+function Text:SetPosition(x, y)
+    self.X = x
+    self.Y = y
+end
+
 function Text:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
     self.ControlBaseHelper._align(self, verticalAlign, horizontalAlign, offsetX, offsetY)
 

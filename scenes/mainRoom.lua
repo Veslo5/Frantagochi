@@ -11,6 +11,8 @@ mainRoom.assetManagerFactory = Global:require("lib.assetManager")
 mainRoom.cameraFactory = Global:require("lib.camera")
 mainRoom.worldFactory = Global:require("scripts.world")
 
+mainRoom.leftBar = require("scripts.ui.leftBar")
+
 
 function mainRoom.load()
     love.graphics.setDefaultFilter("nearest", "nearest", 0)
@@ -20,41 +22,11 @@ function mainRoom.load()
     mainRoom.roomWorld:Load()
 
     mainRoom:bindKeys()
-    mainRoom.assetList = mainRoom.assetManagerFactory:New()
-
-    mainRoom.assetList:Load("map", love.graphics.newImage("resources/maps/Frant.png"))
-    mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
-    mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
-    mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
-    mainRoom.assetList:Load("frantaAnimSit", love.graphics.newImage("resources/maps/Franta_sit.png"))
-    mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
+    mainRoom:loadAssets()
 
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
 
-    local button = mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
-
-    mainRoom.ui:AddInAnimation(2, button, { Height = 150 }, "linear")
-    mainRoom.ui:AddOutAnimation(2, button, { Height = 80 }, "linear")
-    mainRoom.ui:StartAnimation(button)
-
-
-    -- mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)
-    -- mainRoom.ui:AddText("Stat2", 0, 0, ""):Align("center", "left", 20, -50)
-    -- mainRoom.ui:AddText("Stat3", 0, 0, ""):Align("center", "left", 20, -30)
-
-    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("top", "center", -200, 50)
-    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("top", "center", -200, 70)
-    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("top", "center", -200, 90)
-    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("top", "center", -200, 110)
-    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("top", "center", -200, 130)
-
-    mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
-
-    mainRoom.window = mainRoom.ui:AddWindow("TESTWIN", -300, 300, 400, 400, mainRoom.assetList:Get("uiTest"), 1)
-    mainRoom.window:AddControl("Stat1", mainRoom.ui:NewText("Stat1", 0, 90, "IAM INSIDEWINDOW"))
-    mainRoom.window:AddControl("Stat2", mainRoom.ui:NewText("Stat2", 0, 120, "IAM INSIDEWINDOW"))
-    mainRoom.window:AddControl("Stat3", mainRoom.ui:NewText("Stat3", 0, 150, "IAM INSIDEWINDOW"))
-    mainRoom.ui:AddButton("EXPAND", 60, 260, 80, 80, mainRoom.assetList:Get("uiTest"), ">>",2)    
+    mainRoom:buildUI()
 
     mainRoom:createCameras()
 
@@ -81,11 +53,11 @@ function mainRoom.update(dt)
 
     -- keyboard handling
     mainRoom.handleInput(mainRoom, dt)
-    
-    
--- if  mainRoom.ui:IsDown("EXPAND") then
---     print("Hello")
--- end
+
+
+    if mainRoom.ui:IsDown("EXPAND") then
+        mainRoom.leftBar:ChangeState()
+    end
     -- ui update
     mainRoom.ui:Update(mainRoom.uiCamera.MouseWorldX, mainRoom.uiCamera.MouseWorldY, dt)
 
@@ -124,6 +96,49 @@ function mainRoom.draw()
     mainRoom.ui:Draw()
     mainRoom.uiCamera:EndDraw()
 
+end
+
+function mainRoom.loadAssets()
+    mainRoom.assetList = mainRoom.assetManagerFactory:New()
+
+    mainRoom.assetList:Load("map", love.graphics.newImage("resources/maps/Frant.png"))
+    mainRoom.assetList:Load("mapg", love.graphics.newImage("resources/maps/ground.png"))
+    mainRoom.assetList:Load("frantaAnim", love.graphics.newImage("resources/maps/Franta_write1.png"))
+    mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
+    mainRoom.assetList:Load("frantaAnimSit", love.graphics.newImage("resources/maps/Franta_sit.png"))
+    mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
+end
+
+function mainRoom:buildUI()
+    local button = mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
+
+    mainRoom.ui:AddInAnimation(2, button, { Height = 150 }, "linear")
+    mainRoom.ui:AddOutAnimation(2, button, { Height = 80 }, "linear")
+    mainRoom.ui:StartAnimation(button)
+
+
+    -- mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)
+    -- mainRoom.ui:AddText("Stat2", 0, 0, ""):Align("center", "left", 20, -50)
+    -- mainRoom.ui:AddText("Stat3", 0, 0, ""):Align("center", "left", 20, -30)
+
+    mainRoom.ui:AddText("Event1", 0, 0, ""):Align("top", "center", -200, 50)
+    mainRoom.ui:AddText("Event2", 0, 0, ""):Align("top", "center", -200, 70)
+    mainRoom.ui:AddText("Event3", 0, 0, ""):Align("top", "center", -200, 90)
+    mainRoom.ui:AddText("Event4", 0, 0, ""):Align("top", "center", -200, 110)
+    mainRoom.ui:AddText("Event5", 0, 0, ""):Align("top", "center", -200, 130)
+
+    mainRoom.ui:AddScrollText("TESTSCROLL", 200, 0, 1000, 40, mainRoom.assetList:Get("uiTest"))
+
+
+    local uiwindow = mainRoom.ui:AddWindow("TESTWIN", -300, 300, 400, 400, mainRoom.assetList:Get("uiTest"), 1)
+    uiwindow:AddControl("Stat1", mainRoom.ui:NewText("Stat1", 0, 90, "IAM INSIDEWINDOW"))
+    uiwindow:AddControl("Stat2", mainRoom.ui:NewText("Stat2", 0, 120, "IAM INSIDEWINDOW"))
+    uiwindow:AddControl("Stat3", mainRoom.ui:NewText("Stat3", 0, 150, "IAM INSIDEWINDOW"))
+
+    local expandButton = mainRoom.ui:AddButton("EXPAND", 60, 260, 80, 80, mainRoom.assetList:Get("uiTest"), ">>", 2)
+
+    mainRoom.leftBar:AddWindow(uiwindow)
+    mainRoom.leftBar:AddButton(expandButton)
 end
 
 function mainRoom:createCameras()

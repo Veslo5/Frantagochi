@@ -81,8 +81,21 @@ function ui:GetControl(name)
     return nil
 end
 
+function ui:GetControlIndex(name)
+    for index, control in ipairs(self.container) do
+        if control.Name == name then
+            return index
+        end
+    end
+
+    return nil
+end
+
 function ui:Remove(name)
-    self.container[name] = nil
+    local index = self:GetControlIndex(name)
+    if index ~= nil then
+        table.remove(self.container, index)
+    end
 end
 
 function ui:Update(mx, my, dt)
@@ -94,7 +107,7 @@ function ui:Update(mx, my, dt)
 end
 
 function ui:IsDown(name)
-    return self.container[name].IsDown
+    return self:GetControl(name).IsDown
 end
 
 function ui:Draw()

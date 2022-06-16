@@ -50,9 +50,17 @@ function Window:SetPosition(x, y)
     self.X = x
     self.Y = y
 
-    for key, control in pairs(self.Controls) do
+    for key, control in pairs(self.Controls) do        
+        if x == 0 then
+            control.X = 0
+        end
+
+        if y == 0 then
+            control.Y = 0
+        end
+
         control.X = self.X + control.X
-        control.Y = self.Y + control.Y
+        control.Y = self.Y + (control.Y - self.Y)        
     end
 
 end
@@ -66,7 +74,7 @@ function Window:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
 end
 
 function Window:Update(mx, my, dt)
-    for key, value in pairs(self.Controls) do        
+    for key, value in pairs(self.Controls) do
         value:Update(mx, my, dt)
     end
 
@@ -84,7 +92,7 @@ function Window:Draw()
     for key, value in pairs(self.Controls) do
         value:Draw()
     end
-
+    
 end
 
 function Window:Pressed(x, y, button, istouch, presses)

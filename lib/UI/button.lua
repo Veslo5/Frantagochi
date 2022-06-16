@@ -59,6 +59,11 @@ function Button:Align(verticalAlign, horizontalAlign, offsetX, offsetY)
     return self
 end
 
+function Button:SetPosition(x, y)
+    self.X = x
+    self.Y = y
+end
+
 function Button:Update(mx, my, dt)
     if (self.Enabled) then
         self.ControlBaseHelper._handleMouseCoords(self, mx, my)
