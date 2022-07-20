@@ -24,6 +24,15 @@ function Sprite:New(image, zindex, name)
     return newInstance
 end
 
+function Sprite:SetGridPosition(x, y, heightTileOffset, worldPosOffsetX, worldPosOffsetY)
+    local worldPosX, worldPosY = CurrentScene.roomGrid:TileWorldPosition(x, y, heightTileOffset)
+    worldPosX = worldPosX + (worldPosOffsetX or 0)
+    worldPosY = worldPosY + (worldPosOffsetY or 0)
+
+    self:SetPosition(worldPosX, worldPosY)
+    return self
+end
+
 function Sprite:SetPosition(x, y)
     self.X = x
     self.Y = y

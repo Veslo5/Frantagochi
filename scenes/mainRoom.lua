@@ -30,15 +30,10 @@ function mainRoom.load()
 
     mainRoom:createCameras()
 
-    local monitorPosX, monitorPosY = mainRoom.roomGrid:TileWorldPosition(10, 12)
-    local frantaPosX, frantaPosY = mainRoom.roomGrid:TileWorldPosition(11, 13, 1)
-    local frantaSitPosX, frantaSitPosY = mainRoom.roomGrid:TileWorldPosition(4, 12)
-    mainRoom.roomWorld:AddSprite("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetPosition(monitorPosX + 20, monitorPosY)
-    mainRoom.roomWorld:AddSprite("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaPosX, frantaPosY):SetVisibility(false)
-    mainRoom.roomWorld:AddSprite("idle_sitting", mainRoom.assetList:Get("frantaAnimSit"), 1):Animate(64, 64, 0.1, "1-4", 1):SetPosition(frantaSitPosX, frantaSitPosY):SetVisibility(false)
-    mainRoom.roomWorld:AddSprite("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0);
-
-
+    mainRoom.roomWorld:AddObject("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetGridPosition(10, 12, 0, 20, 0) 
+    mainRoom.roomWorld:AddObject("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetGridPosition(11, 13, 1):SetVisibility(false)
+    mainRoom.roomWorld:AddObject("idle_sitting", mainRoom.assetList:Get("frantaAnimSit"), 1):Animate(64, 64, 0.1, "1-4", 1):SetGridPosition(4, 12):SetVisibility(false)
+    mainRoom.roomWorld:AddObject("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0)
 end
 
 function mainRoom.update(dt)
@@ -107,14 +102,19 @@ function mainRoom.loadAssets()
     mainRoom.assetList:Load("monitorAnim", love.graphics.newImage("resources/maps/monitor_write1.png"))
     mainRoom.assetList:Load("frantaAnimSit", love.graphics.newImage("resources/maps/Franta_sit.png"))
     mainRoom.assetList:Load("uiTest", love.graphics.newImage("resources/ui/UI-1.png"))
+    mainRoom.assetList:Load("uiTest2", love.graphics.newImage("resources/ui/UI-3.png"))
+    mainRoom.assetList:Load("drink", love.graphics.newImage("resources/maps/drink.png"))
+    mainRoom.assetList:Load("cigs", love.graphics.newImage("resources/maps/cigs.png"))
 end
 
 function mainRoom:buildUI()
-    local button = mainRoom.ui:AddButton("Test", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest"), "TEST"):Align("top", "right", -5, 100)
+    local button = mainRoom.ui:AddButton("Drink", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1, mainRoom.assetList:Get("drink")):Align("top", "right", -5, 100)
+    mainRoom.ui:AddButton("Cigs", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1, mainRoom.assetList:Get("cigs")):Align("top", "right", -5, 190)
 
-    mainRoom.ui:AddInAnimation(2, button, { Height = 150 }, "linear")
-    mainRoom.ui:AddOutAnimation(2, button, { Height = 80 }, "linear")
-    mainRoom.ui:StartAnimation(button)
+
+    -- mainRoom.ui:AddInAnimation(2, button, { Height = 90, Width = 90 }, "linear")
+    -- mainRoom.ui:AddOutAnimation(2, button, { Height = 80, Width = 80 }, "linear")
+    -- mainRoom.ui:StartAnimation(button)
 
 
     -- mainRoom.ui:AddText("Stat1", 0, 0, ""):Align("center", "left", 20, -70)

@@ -21,8 +21,8 @@ function ui:AddText(name, x, y, text, zindex)
     return newText
 end
 
-function ui:AddButton(name, x, y, width, height, image, text, zindex)
-    local newbutton = self.buttonFactory:New(name, x, y, width, height, text, zindex, image, self.font)
+function ui:AddButton(name, x, y, width, height, image, text, zindex, foregroundImage)
+    local newbutton = self.buttonFactory:New(name, x, y, width, height, text, zindex, image, foregroundImage, self.font)
     table.insert(self.container, newbutton)
     table.sort(self.container, function(val1, val2) return val1.Z < val2.Z end)
     return newbutton
@@ -54,7 +54,7 @@ function ui:NewScrollText(name, x, y, width, height, image)
     return self.scrollTextFactory:New(name, x, y, width, height, image)
 end
 
-function ui:AddInAnimation(duration, control, target, easing)        
+function ui:AddInAnimation(duration, control, target, easing)
     local tween = ui.tweenFactory.new(duration, control, target, easing)
     table.insert(control.InAnimations, tween)
     return control
@@ -119,7 +119,7 @@ end
 function ui:Mousepressed(x, y, button, istouch, presses)
     for key, value in pairs(self.container) do
         if (type(value.Pressed) == "function") then
-            value:Pressed(x,y,button,istouch, presses)
+            value:Pressed(x, y, button, istouch, presses)
         end
     end
 end

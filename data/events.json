@@ -4,59 +4,28 @@
             "Animation": "idle_programming",
             "Description": "EVENT 1",
             "Duration": 5,
-            "Progress": 0
+            "Progress": 0,
+            "InAnimation": {
+                "Animation": "",
+                "StartingPosX": 0,
+                "StartingPosY": 0,
+                "EndingPosX": 0,
+                "EndingPosY": 0,
+                "Speed": 0
+            },
+            "OutAnimation": {
+                "Animation": "",
+                "StartingPosX": 0,
+                "StartingPosY": 0,
+                "EndingPosX": 0,
+                "EndingPosY": 0,
+                "Speed": 0
+            },
+            "AdditionalWorldInteractions":[]
         },
         {
             "Animation": "idle_sitting",
             "Description": "EVENT 2",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_programming",
-            "Description": "EVENT 3",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_sitting",
-            "Description": "EVENT 4",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_programming",
-            "Description": "EVENT 5",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_sitting",
-            "Description": "EVENT 6",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_programming",
-            "Description": "EVENT 7",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_sitting",
-            "Description": "EVENT 8",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_programming",
-            "Description": "EVENT 9",
-            "Duration": 5,
-            "Progress": 0
-        },
-        {
-            "Animation": "idle_sitting",
-            "Description": "EVENT 10",
             "Duration": 5,
             "Progress": 0
         }

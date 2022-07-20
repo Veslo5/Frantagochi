@@ -20,7 +20,7 @@ function World:Load()
     self.player:Load()
 end
 
-function World:AddSprite(name, image, zindex)
+function World:AddObject(name, image, zindex)
     table.insert(self.sprites, self.sprite:New(image, zindex, name))
     local item = self.sprites[#self.sprites]
     table.sort(self.sprites, function(val1, val2) return val1.Z < val2.Z end)
@@ -28,7 +28,7 @@ function World:AddSprite(name, image, zindex)
     return item
 end
 
-function World:GetSprite(name)
+function World:GetObject(name)
     for index, value in ipairs(self.sprites) do
         if value.Name == name then
             return value

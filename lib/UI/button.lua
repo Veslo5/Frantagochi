@@ -10,7 +10,8 @@ Button.Width = 100
 Button.Height = 30
 Button.VerticalAlign = "top"
 Button.HorizontalAlign = "left"
-Button.Image = nil
+Button.BackgroundImage = nil
+Button.ForegroundImage = nil
 Button.Font = nil
 Button.Enabled = true
 Button.IsHovered = false;
@@ -28,7 +29,7 @@ Button.IsDown = false
 Button.LastFrameDown = false
 
 --- Constructor
-function Button:New(name, x, y, width, height, text, zIndex, image, font)
+function Button:New(name, x, y, width, height, text, zIndex, backgroundImage, foregroundImage, font)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
@@ -39,7 +40,8 @@ function Button:New(name, x, y, width, height, text, zIndex, image, font)
     newInstance.Width = width
     newInstance.Height = height
     newInstance.Text = text
-    newInstance.Image = image
+    newInstance.BackgroundImage = backgroundImage
+    newInstance.ForegroundImage = foregroundImage
     newInstance.Font = font
     newInstance.Z = zIndex or 0
 
@@ -85,7 +87,11 @@ function Button:Draw()
         -- love.graphics.rectangle("line", self.X, self.Y, self.Width, self.Height)
 
         love.graphics.setColor(1, 1, 1, self.Opacity)
-        love.graphics.draw(self.Image, self.X, self.Y, nil, self.Width / self.Image:getWidth(), self.Height / self.Image:getHeight())
+        love.graphics.draw(self.BackgroundImage, self.X, self.Y, nil, self.Width / self.BackgroundImage:getWidth(), self.Height / self.BackgroundImage:getHeight())
+        
+        if (self.ForegroundImage ~= nil) then
+            love.graphics.draw(self.ForegroundImage, self.X, self.Y, nil, self.Width / self.ForegroundImage:getWidth(), self.Height / self.ForegroundImage:getHeight())
+        end
 
         local texteWidth = self.Font:getWidth(self.Text)
         local texteHeight = self.Font:getHeight(self.Text)
@@ -94,7 +100,7 @@ function Button:Draw()
     end
 end
 
-function Button:Pressed()        
+function Button:Pressed()
     if (self.IsHovered and self.Enabled) then
         self.IsDown = true
         self.LastFrameDown = false
