@@ -9,6 +9,8 @@ Sprite.Animation = nil
 Sprite.Z = 0
 Sprite.Visible = true
 
+Sprite.Tween = nil
+Sprite.StartTween = false
 
 
 --- Constructor
@@ -56,6 +58,11 @@ function Sprite:Update(dt)
     if self.Static == false and self.Visible == true then
         self.Animation:update(dt)
     end
+
+    if self.StartTween == true then
+        self.Tween:update(dt)
+    end
+
 end
 
 function Sprite:Draw()

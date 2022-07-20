@@ -7,12 +7,12 @@ Event.InAnimation = nil
 Event.OutAnimation = nil
 
 --- Constructor
-function Event:New(animation, description, duration, inAnimation, outAnimation, additionalWorldInteractions)
+function Event:New(object, description, duration, inAnimation, outAnimation, additionalWorldInteractions)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
-    newInstance.Animation = animation
+    newInstance.WorldObject = object
     newInstance.Description = description
     newInstance.Duration = duration
     newInstance.InAnimation = inAnimation

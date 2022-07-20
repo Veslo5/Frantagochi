@@ -1,7 +1,7 @@
 {
     "Events": [
         {
-            "Animation": "idle_programming",
+            "WorldObject": "idle_programming",            
             "Description": "EVENT 1",
             "Duration": 5,
             "Progress": 0,
@@ -21,10 +21,10 @@
                 "EndingPosY": 0,
                 "Speed": 0
             },
-            "AdditionalWorldInteractions":[]
+            "AdditionalWorldInteractions": []
         },
         {
-            "Animation": "idle_sitting",
+            "WorldObject": "idle_sitting",
             "Description": "EVENT 2",
             "Duration": 5,
             "Progress": 0

@@ -1,0 +1,72 @@
+{
+    "World": [
+        {
+            "Name": "monitor_animated",
+            "Asset": "monitorAnim",
+            "GridPosition": {
+                "GridPositionX": 10,
+                "GridPositionY": 12,
+                "HeightTileOffset": 0,
+                "WorldPosXOffset": 20,
+                "WorldPosYOffset": 0
+            },
+            "Visible": true,
+            "ZIndex": 2,
+            "Animation": {
+                "GridWidth": 64,
+                "GridHeight": 32,
+                "Speed": 0.4,
+                "Frames": "1-5",
+                "Row": 1
+            }
+        },
+        {
+            "Name": "idle_programming",
+            "Asset": "frantaAnim",
+            "GridPosition": {
+                "GridPositionX": 11,
+                "GridPositionY": 13,
+                "HeightTileOffset": 1,
+                "WorldPosXOffset": null,
+                "WorldPosYOffset": null
+            },
+            "Visible": false,
+            "ZIndex": 1,
+            "Animation": {
+                "GridWidth": 64,
+                "GridHeight": 64,
+                "Speed": 0.1,
+                "Frames": "1-4",
+                "Row": 1
+            }
+        },
+        {
+            "Name": "idle_sitting",
+            "Asset": "frantaAnimSit",
+            "GridPosition": {
+                "GridPositionX": 4,
+                "GridPositionY": 12,
+                "HeightTileOffset": null,
+                "WorldPosXOffset": null,
+                "WorldPosYOffset": null
+            },
+            "Visible": false,
+            "ZIndex": 1,
+            "Animation": {
+                "GridWidth": 64,
+                "GridHeight": 64,
+                "Speed": 0.1,
+                "Frames": "1-4",
+                "Row": 1
+            }
+        },
+        {
+            "Name": "map_background",
+            "Asset": "map",
+            "WorldPositionX": 0,
+            "WorldPositionY": 0,
+            "Visible": true,
+            "ZIndex": 0
+        }
+    ]
+}

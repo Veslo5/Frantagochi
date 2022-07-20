@@ -74,7 +74,7 @@ end
 function Player:GenerateEvent()
     local currentEventIndex = love.math.random(1, #self.loadedEvents.Events)
     local currentEvent = self.loadedEvents.Events[currentEventIndex]
-    return self.eventFactory:New(currentEvent.Animation, currentEvent.Description, currentEvent.Duration, currentEvent.InAnimation, currentEvent.OutAnimation, currentEvent.AdditionalWorldInteractions)
+    return self.eventFactory:New(currentEvent.WorldObject, currentEvent.Description, currentEvent.Duration, currentEvent.InAnimation, currentEvent.OutAnimation, currentEvent.AdditionalWorldInteractions)
 end
 
 function Player:CheckEvents()
@@ -118,13 +118,14 @@ function Player:CheckEvents()
     end
 
     if (event1.Progress >= event1.Duration) then
-        CurrentScene.roomWorld:GetObject(event1.Animation):SetVisibility(false)
+
+        CurrentScene.roomWorld:GetObject(event1.WorldObject):SetVisibility(false)
 
         table.remove(self.Data.EventQueue, 1)
         self:AddEvent(self:GenerateEvent())
 
         local newLatestEvent = self.Data.EventQueue[1]
-        CurrentScene.roomWorld:GetObject(newLatestEvent.Animation):SetVisibility(true)
+        CurrentScene.roomWorld:GetObject(newLatestEvent.WorldObject):SetVisibility(true)
     else
         event1.Progress = event1.Progress + 1
     end
