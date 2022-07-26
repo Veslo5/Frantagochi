@@ -1,25 +1,52 @@
 {
     "Events": [
         {
-            "WorldObject": "idle_programming",            
+            "WorldObject": "idle_programming",
             "Description": "EVENT 1",
             "Duration": 5,
             "Progress": 0,
             "InAnimation": {
-                "Animation": "",
-                "StartingPosX": 0,
-                "StartingPosY": 0,
-                "EndingPosX": 0,
-                "EndingPosY": 0,
-                "Speed": 0
+                "AnimationAsset": "blank",
+                "Animate": false,
+                "UseStartingCurrentWorldPosition": false,                
+                "StartingGridPosX": 0,
+                "StartingGridPosY": 0,
+                "HeightTileOffset":0,
+                "StratingGridXWorldOffset":0,
+                "StratingGridYWorldOffset":0,
+                "Duration": 2,
+                "ObjectProps": {
+                    "X": 500,
+                    "Y": 500
+                },
+                "Animation": {
+                    "GridWidth": 64,
+                    "GridHeight": 32,
+                    "Speed": 0.4,
+                    "Frames": "1-5",
+                    "Row": 1
+                }
             },
             "OutAnimation": {
-                "Animation": "",
-                "StartingPosX": 0,
-                "StartingPosY": 0,
-                "EndingPosX": 0,
-                "EndingPosY": 0,
-                "Speed": 0
+                "AnimationAsset": "blank",
+                "Animate": false,
+                "UseStartingCurrentWorldPosition": true,
+                "StartingGridPosX": 0,
+                "StartingGridPosY": 0,
+                "HeightTileOffset":0,
+                "StratingGridXWorldOffset":0,
+                "StratingGridYWorldOffset":0,
+                "Duration": 5,
+                "ObjectProps": {                    
+                    
+                },
+                "Animation": {
+                    "GridWidth": 64,
+                    "GridHeight": 32,
+                    "Speed": 0.4,
+                    "Frames": "1-5",
+                    "Row": 1
+                }
             },
             "AdditionalWorldInteractions": []
         },
@@ -27,7 +54,52 @@
             "WorldObject": "idle_sitting",
             "Description": "EVENT 2",
             "Duration": 5,
-            "Progress": 0
+            "Progress": 0,
+            "InAnimation": {
+                "AnimationAsset": "blank",
+                "Animate": false,
+                "UseStartingCurrentWorldPosition": false,
+                "StartingGridPosX": 0,
+                "StartingGridPosY": 0,
+                "HeightTileOffset":0,
+                "StratingGridXWorldOffset":0,
+                "StratingGridYWorldOffset":0,
+                "Duration": 2,
+                "ObjectProps": {
+                    "X": 500,
+                    "Y": 500
+                },
+                "Animation": {
+                    "GridWidth": 64,
+                    "GridHeight": 32,
+                    "Speed": 0.4,
+                    "Frames": "1-5",
+                    "Row": 1
+                }
+            },
+            "OutAnimation": {
+                "AnimationAsset": "blank",
+                "Animate": false,
+                "UseStartingCurrentWorldPosition": false,
+                "StartingGridPosX": 0,
+                "StartingGridPosY": 0,
+                "HeightTileOffset":0,
+                "StratingGridXWorldOffset":0,
+                "StratingGridYWorldOffset":0,
+                "ObjectProps": {
+                    "X": 500,
+                    "Y": 500
+                },
+                "Duration": 2,
+                "Animation": {
+                    "GridWidth": 64,
+                    "GridHeight": 32,
+                    "Speed": 0.4,
+                    "Frames": "1-5",
+                    "Row": 1
+                }
+            },
+            "AdditionalWorldInteractions": []
         }
     ]
 }

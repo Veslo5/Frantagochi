@@ -17,19 +17,20 @@ mainRoom.leftBar = require("scripts.ui.leftBar")
 function mainRoom.load()
     love.graphics.setDefaultFilter("nearest", "nearest", 0)
     mainRoom.ui:Load("resources/fonts/Kaph-Regular.ttf")
-    
+
     mainRoom:loadAssets()
-    mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(), mainRoom.assetList:Get("map"):getHeight(), 64, 32)
+    mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(),
+        mainRoom.assetList:Get("map"):getHeight(), 64, 32)
 
     mainRoom.roomWorld = mainRoom.worldFactory:New()
     mainRoom.roomWorld:Load()
-    
+
     mainRoom:bindKeys()
     mainRoom:buildUI()
 
     mainRoom:createCameras()
 
-    -- mainRoom.roomWorld:AddObject("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetGridPosition(10, 12, 0, 20, 0) 
+    -- mainRoom.roomWorld:AddObject("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetGridPosition(10, 12, 0, 20, 0)
     -- mainRoom.roomWorld:AddObject("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetGridPosition(11, 13, 1):SetVisibility(false)
     -- mainRoom.roomWorld:AddObject("idle_sitting", mainRoom.assetList:Get("frantaAnimSit"), 1):Animate(64, 64, 0.1, "1-4", 1):SetGridPosition(4, 12):SetVisibility(false)
     -- mainRoom.roomWorld:AddObject("map_background", mainRoom.assetList:Get("map"), 0):SetPosition(0, 0)
@@ -43,7 +44,8 @@ function mainRoom.update(dt)
     -- touch update
     mainRoom.touch:Update()
     local touchPosX, touchPosY = mainRoom.touch:GetCurrentPos()
-    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10, mainRoom.gameplayCamera.Y + touchPosY / 10, true)
+    mainRoom.gameplayCamera:SetPosition(mainRoom.gameplayCamera.X + touchPosX / 10,
+        mainRoom.gameplayCamera.Y + touchPosY / 10, true)
 
     -- keyboard handling
     mainRoom.handleInput(mainRoom, dt)
@@ -71,14 +73,16 @@ function mainRoom.draw()
 
     mainRoom.uiCamera:BeginDraw()
     -- UI rendering
+    mainRoom.ui:Draw()
+
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print(mouseX, 20, 20)
     love.graphics.print(mouseY, 20, 30)
 
-    love.graphics.print("G-Camera", 20, 50)
+    love.graphics.print("G-Camera", 20, 50)        
 
     love.graphics.print(mainRoom.gameplayCamera.MouseWorldX, 20, 60)
-    love.graphics.print(mainRoom.gameplayCamera.MouseWorldY, 20, 70)
+    love.graphics.print(mainRoom.gameplayCamera.MouseWorldY, 20, 70)    
 
     love.graphics.print("UI-Camera", 20, 90)
 
@@ -87,7 +91,19 @@ function mainRoom.draw()
 
     love.graphics.print(love.timer.getFPS(), 20, 130)
 
-    mainRoom.ui:Draw()
+    love.graphics.print("World object count: " .. #mainRoom.roomWorld.objects, 20, 150)
+    love.graphics.print("UI object count: " .. #mainRoom.ui.container, 20, 160)
+
+
+    local stats = love.graphics.getStats()
+    love.graphics.print("Drawcalls: " .. stats.drawcalls, 20, 180)
+    love.graphics.print("Canvasswitches: " .. stats.canvasswitches, 20, 190)
+    love.graphics.print("Texturememory: " .. stats.texturememory / 1000000 .. "MB", 20, 200)
+    love.graphics.print("Images: " .. stats.images, 20, 210)
+    love.graphics.print("Canvases: " .. stats.canvases, 20, 220)
+    love.graphics.print("Fonts: " .. stats.fonts, 20, 230)
+
+
     mainRoom.uiCamera:EndDraw()
 
 end
@@ -104,11 +120,14 @@ function mainRoom.loadAssets()
     mainRoom.assetList:Load("uiTest2", love.graphics.newImage("resources/ui/UI-3.png"))
     mainRoom.assetList:Load("drink", love.graphics.newImage("resources/maps/drink.png"))
     mainRoom.assetList:Load("cigs", love.graphics.newImage("resources/maps/cigs.png"))
+    mainRoom.assetList:Load("blank", love.graphics.newImage("resources/maps/blank.png"))
 end
 
 function mainRoom:buildUI()
-    local button = mainRoom.ui:AddButton("Drink", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1, mainRoom.assetList:Get("drink")):Align("top", "right", -5, 100)
-    mainRoom.ui:AddButton("Cigs", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1, mainRoom.assetList:Get("cigs")):Align("top", "right", -5, 190)
+    local button = mainRoom.ui:AddButton("Drink", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1,
+        mainRoom.assetList:Get("drink")):Align("top", "right", -5, 100)
+    mainRoom.ui:AddButton("Cigs", 0, 0, 80, 80, mainRoom.assetList:Get("uiTest2"), "", 1, mainRoom.assetList:Get("cigs"))
+        :Align("top", "right", -5, 190)
 
 
     -- mainRoom.ui:AddInAnimation(2, button, { Height = 90, Width = 90 }, "linear")
@@ -144,7 +163,8 @@ function mainRoom:createCameras()
     mainRoom.gameplayCamera = Global:AddGlobal("GAMEPLAY_CAMERA", mainRoom.cameraFactory:New())
     mainRoom.uiCamera = Global:AddGlobal("MENU_CAMERA", mainRoom.cameraFactory:New(100, "Fill", 1366, 768))
 
-    mainRoom.gameplayCamera:SetPosition(mainRoom.assetList:Get("map"):getWidth() / 2, mainRoom.assetList:Get("map"):getHeight() / 2, true)
+    mainRoom.gameplayCamera:SetPosition(mainRoom.assetList:Get("map"):getWidth() / 2,
+        mainRoom.assetList:Get("map"):getHeight() / 2, true)
 end
 
 function mainRoom:handleInput(dt)

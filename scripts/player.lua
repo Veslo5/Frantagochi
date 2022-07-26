@@ -10,6 +10,8 @@ Player.progressStatFactory = require("scripts.progressStat")
 Player.timer = nil
 Player.loadedEvents = nil
 
+Player.currentAnimObject = nil
+
 Player.Data = {
     EventQueue = {},
     ProgressStats = {},
@@ -119,13 +121,39 @@ function Player:CheckEvents()
 
     if (event1.Progress >= event1.Duration) then
 
-        CurrentScene.roomWorld:GetObject(event1.WorldObject):SetVisibility(false)
+        if(event1.OutStarted == false) then
+            event1.OutStarted = true
 
-        table.remove(self.Data.EventQueue, 1)
-        self:AddEvent(self:GenerateEvent())
+            local currentObj = CurrentScene.roomWorld:GetObject(event1.WorldObject):SetVisibility(false)            
+            self.currentAnimObject = CurrentScene.roomWorld:AddObject(currentObj.Name .. "_EventOut", CurrentScene.assetList:Get(event1.OutAnimation.AnimationAsset), 999)
 
-        local newLatestEvent = self.Data.EventQueue[1]
-        CurrentScene.roomWorld:GetObject(newLatestEvent.WorldObject):SetVisibility(true)
+            if(event1.OutAnimation.UseStartingCurrentWorldPosition == true) then 
+                self.currentAnimObject:SetPosition(currentObj.X, currentObj.Y)
+            else
+                self.currentAnimObject:SetGridPosition(event1.OutAnimation.StartingGridPosX, event1.OutAnimation.StartingGridPosY,
+                event1.OutAnimation.HeightTileOffset, event1.OutAnimation.StratingGridXWorldOffset,
+                event1.OutAnimation.StratingGridYWorldOffset)
+            end
+            
+            if event1.OutAnimation.Animate then
+                --TODO: create animation
+            end
+
+            CurrentScene.roomWorld:AddTween(self.currentAnimObject,event1.OutAnimation.Duration,event1.OutAnimation.ObjectProps, "linear")
+            CurrentScene.roomWorld:StartTween(self.currentAnimObject)
+        end
+
+        if self.currentAnimObject.TweenEnded then
+            
+            CurrentScene.roomWorld:Remove(self.currentAnimObject.Name)
+            self.currentAnimObject = nil
+
+            table.remove(self.Data.EventQueue, 1)
+            self:AddEvent(self:GenerateEvent())
+            
+            local newLatestEvent = self.Data.EventQueue[1]
+            CurrentScene.roomWorld:GetObject(newLatestEvent.WorldObject):SetVisibility(true)
+        end
     else
         event1.Progress = event1.Progress + 1
     end

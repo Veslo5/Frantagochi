@@ -22,18 +22,21 @@ function World:Load()
 
     local worldJSON = love.filesystem.read("data/world.json")
     local worldData = self.json.decode(worldJSON)
-    
+
     for index, value in ipairs(worldData.World) do
         local obj = self:AddObject(value.Name, CurrentScene.assetList:Get(value.Asset), value.ZIndex)
 
         if value.Animation ~= nil then
-            obj:Animate(value.Animation.GridWidth, value.Animation.GridHeight, value.Animation.Speed, value.Animation.Frames, value.Animation.Row)
+            obj:Animate(value.Animation.GridWidth, value.Animation.GridHeight, value.Animation.Speed,
+                value.Animation.Frames, value.Animation.Row)
         end
 
         if value.GridPosition ~= nil then
-            obj:SetGridPosition(value.GridPosition.GridPositionX, value.GridPosition.GridPositionY, value.GridPosition.HeightTileOffset, value.GridPosition.WorldPosXOffset, value.GridPosition.WorldPosYOffset)
+            obj:SetGridPosition(value.GridPosition.GridPositionX, value.GridPosition.GridPositionY,
+                value.GridPosition.HeightTileOffset, value.GridPosition.WorldPosXOffset,
+                value.GridPosition.WorldPosYOffset)
         else
-            obj:SetPosition(value.WorldPositionX, value.WorldPositionY)            
+            obj:SetPosition(value.WorldPositionX, value.WorldPositionY)
         end
 
         obj:SetVisibility(value.Visible)
@@ -60,40 +63,64 @@ function World:GetObject(name)
     end
 end
 
-function World:AddTween(duration, name, target, easing)
-    local control = self:GetObject(name)
+function World:AddTween(object, duration, target, easing)    
+    local control = self:_resolveObjectParameter(object)
+
     local tween = World.tweenFactory.new(duration, control, target, easing)
     control.Tween = tween
     return control
 end
 
-function World:StartTween(objectName)
-    local control = self:GetObject(objectName)
+function World:StartTween(object)
+    local control = self:_resolveObjectParameter(object)
     control.StartTween = true
 end
 
-function World:StopTween(objectName)
-    local control = self:GetObject(objectName)
+function World:StopTween(object)
+    local control = self:_resolveObjectParameter(object)
     control.StartTween = false
 end
 
 function World:Update(dt)
-    for key, value in pairs(self.objects) do
+    for key, value in ipairs(self.objects) do
         value:Update(dt)
     end
     self.player:Update(dt)
 end
 
 function World:Draw()
-    for key, value in pairs(self.objects) do
+    for key, value in ipairs(self.objects) do        
         value:Draw()
     end
+end
+
+function World:Remove(name)
+
+    local indexToRemove = nil
+    for index, value in ipairs(self.objects) do
+        if value.Name == name then
+            indexToRemove = index
+        end
+    end
+    
+    table.remove(self.objects, indexToRemove)
 end
 
 function World:Unload()
     for i = 1, #self.objects, 1 do
         self.objects[i] = nil
     end
+end
+
+function World:_resolveObjectParameter(object)
+    local control = nil
+    if type(object) == "string" then
+        control = self:GetObject(object)
+    else
+        control = object
+
+    end
+    return control
 end
 
 return World

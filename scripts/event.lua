@@ -3,7 +3,10 @@ Event.Animation = ""
 Event.Description = ""
 Event.Duration = 60
 Event.Progress = 0
+Event.InStarted = false
 Event.InAnimation = nil
+
+Event.OutStarted = false
 Event.OutAnimation = nil
 
 --- Constructor

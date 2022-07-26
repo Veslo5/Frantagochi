@@ -9,6 +9,7 @@ Sprite.Animation = nil
 Sprite.Z = 0
 Sprite.Visible = true
 
+Sprite.TweenEnded = false
 Sprite.Tween = nil
 Sprite.StartTween = false
 
@@ -27,6 +28,7 @@ function Sprite:New(image, zindex, name)
 end
 
 function Sprite:SetGridPosition(x, y, heightTileOffset, worldPosOffsetX, worldPosOffsetY)
+    -- TODO: roomGrid should not be referenced from core code!!
     local worldPosX, worldPosY = CurrentScene.roomGrid:TileWorldPosition(x, y, heightTileOffset)
     worldPosX = worldPosX + (worldPosOffsetX or 0)
     worldPosY = worldPosY + (worldPosOffsetY or 0)
@@ -60,7 +62,7 @@ function Sprite:Update(dt)
     end
 
     if self.StartTween == true then
-        self.Tween:update(dt)
+        self.TweenEnded = self.Tween:update(dt)
     end
 
 end
