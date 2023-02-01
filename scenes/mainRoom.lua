@@ -14,21 +14,25 @@ mainRoom.worldFactory = Global:require("scripts.world")
 mainRoom.leftBar = require("scripts.ui.leftBar")
 
 
+
 function mainRoom.load()
     love.graphics.setDefaultFilter("nearest", "nearest", 0)
     mainRoom.ui:Load("resources/fonts/Kaph-Regular.ttf")
-
+    
     mainRoom:loadAssets()
     mainRoom.roomGrid = mainRoom.isoGrid:New(mainRoom.assetList:Get("map"):getWidth(),
         mainRoom.assetList:Get("map"):getHeight(), 64, 32)
-
-    mainRoom.roomWorld = mainRoom.worldFactory:New()
-    mainRoom.roomWorld:Load()
-
-    mainRoom:bindKeys()
+        
+        mainRoom.roomWorld = mainRoom.worldFactory:New()
+        mainRoom.roomWorld:Load()
+        
+        mainRoom:bindKeys()
     mainRoom:buildUI()
-
+    
     mainRoom:createCameras()
+    
+    mainRoom.slices = require("lib.UI.slice9")
+    mainRoom.TestSlice = mainRoom.slices:New(love.graphics.newImage("resources/ui/UI-1.png"),0,0,0,0)
 
     -- mainRoom.roomWorld:AddObject("monitor_animated", mainRoom.assetList:Get("monitorAnim"), 2):Animate(64, 32, 0.4, "1-5", 1):SetGridPosition(10, 12, 0, 20, 0)
     -- mainRoom.roomWorld:AddObject("idle_programming", mainRoom.assetList:Get("frantaAnim"), 1):Animate(64, 64, 0.1, "1-4", 1):SetGridPosition(11, 13, 1):SetVisibility(false)
@@ -103,6 +107,8 @@ function mainRoom.draw()
     love.graphics.print("Canvases: " .. stats.canvases, 20, 220)
     love.graphics.print("Fonts: " .. stats.fonts, 20, 230)
 
+
+    mainRoom.TestSlice:Draw(200, 200, 1, 1)
 
     mainRoom.uiCamera:EndDraw()
 
